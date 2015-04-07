@@ -1,0 +1,5 @@
+name: VISC report
+description: >
+ Template for creating a VISC report
+create_dir: true
+

@@ -1,0 +1,12 @@
+Package: scharpTemplates
+Type: Package
+Title: A gret template for VISC
+Version: 0.1
+Date: 2015-05-06
+Author: Who wrote it
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
+Imports:
+    rmarkdown
+
