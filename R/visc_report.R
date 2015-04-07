@@ -1,4 +1,4 @@
-#' @export
+#'@export
 visc_report <- function() {
   template <- find_resource("visc_report", "template.tex")
 
