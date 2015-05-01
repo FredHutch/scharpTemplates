@@ -1,0 +1,5 @@
+name: RGLab report
+description: >
+ Template for creating an RGLab report
+create_dir: true
+
