@@ -18,6 +18,40 @@ bibliography: bibliography.bib
 output: scharpTemplates::visc_report
 ---
 
+```{r echo=FALSE, eval=TRUE}
+library(knitr)
+# Set some knitr options
+# This will always generate two figures (pdf and png, which can be handy for presentations)
+opts_chunk$set(tidy = TRUE, cache = FALSE, messages = FALSE, warning = FALSE, echo = FALSE, dev = c("pdf", "png"), dpi = 200)
+```
+
+```{r}
+# Load necessary packages
+# More options could be added later in the template
+library(ggplot2)
+library(data.table)
+library(grid)
+library(reshape2)
+# Create a theme
+# This can be overloaded with other options
+visc_theme <- theme(legend.position = "bottom", legend.margin = unit(0, "cm"))
+```
+
+```{r eval=FALSE}
+# This report uses the data compiled in the AUP567 data package
+# You can install it as follows
+install_git("https://github.fhcrc.org/VIDD-VISC/AUP567")
+```
+
+```{r eval=FALSE}
+# Load data package
+# This will have to be replaced with your own study package
+# Then change to eval=TRUE
+library(AUP567)
+# Load data
+data(AUP567)
+```
+
 # Background
 
 Cavaliers comprenez ou gendarmes je annoncait. Fabriques attelages non dut peu car echangent etendards jugements. Je indus voyez de fumee cette. Son est rang sur veut avis. Lassitude he sa servantes sanglante et carabines. Souliers rizieres il illumine au allumait cornette il crispent un. But ete ordure terres choses. Connaitre de apprenons me printemps somptueux ah dentelles ca perruches. Aime pour eux car ames car. 
