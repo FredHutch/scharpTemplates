@@ -5,6 +5,9 @@
 \usepackage{xcolor, color, pdfcolmk}
 \usepackage[citestyle=authoryear-comp,natbib=true]{biblatex}
 \usepackage[hmargin=2cm, top=2.7cm, bottom=3.5cm, footskip=0.5cm]{geometry}
+$if(endfloat)$
+\usepackage[$endfloat.opts$]{endfloat}
+$endif$
 \usepackage{fancyhdr, graphicx, lastpage, ifthen, lscape, xcolor}
 \usepackage{etoolbox}
 \usepackage{pdflscape}
@@ -14,9 +17,6 @@
 \usepackage{longtable}
 \usepackage{lipsum}
 
-$if(endfloat)$
-\usepackage[$endfloat.opts$]{endfloat}
-$endif$
 \bibliography{$bibliography$}
 
 
