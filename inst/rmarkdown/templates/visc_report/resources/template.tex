@@ -1,5 +1,10 @@
 \documentclass[11pt]{article}
 \usepackage{hyperref}
+\usepackage{caption}
+\DeclareCaptionType{supptable}[Supplementary Table][List of Supplementary Tables]
+\newenvironment{supptab}{\captionsetup{type=supptable}}{}
+\DeclareCaptionType{suppfigure}[Supplementary Figure][List of Supplementary Figures]
+\newenvironment{suppfig}{\captionsetup{type=suppfigure}}{}
 \usepackage{url}
 \usepackage{float}
 \usepackage{xcolor, color, pdfcolmk}
@@ -157,7 +162,9 @@ this line is to\= set up the tab stop \kill
 \vspace{2cm}
 
 %begin contents section
-%\tableofcontents
+$if(toc)$
+\tableofcontents
+$endif$
 
 %change color of header and footer text to gray
 \makeatletter
@@ -176,7 +183,12 @@ $summary$
 \newpage
 \fancyhead[R]{\em $shorttitle$}
 \fancyhead[L]{\em VISC report}
-
+$if(lof)$
+\listoffigures
+\listoftables
+\listofsuppfigures
+\listofsupptables
+$endif$
 
 $body$
 
