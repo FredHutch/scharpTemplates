@@ -1,26 +1,21 @@
 \documentclass[11pt]{article}
-\usepackage{hyperref}
-\usepackage{caption}
-\DeclareCaptionType{supptable}[Supplementary Table][List of Supplementary Tables]
-\newenvironment{supptab}{\captionsetup{type=supptable}}{}
-\DeclareCaptionType{suppfigure}[Supplementary Figure][List of Supplementary Figures]
-\newenvironment{suppfig}{\captionsetup{type=suppfigure}}{}
-\usepackage{url}
-\usepackage{float}
-\usepackage{xcolor, color, pdfcolmk}
-\usepackage[citestyle=authoryear-comp,natbib=true]{biblatex}
+\usepackage[page]{totalcount}
 \usepackage[hmargin=2cm, top=2.7cm, bottom=3.5cm, footskip=0.5cm]{geometry}
 $if(endfloat)$
 \usepackage[$endfloat.opts$]{endfloat}
 $endif$
-\usepackage{fancyhdr, graphicx, lastpage, ifthen, lscape, xcolor}
-\usepackage{etoolbox}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{float}
+\usepackage{xcolor, color, pdfcolmk}
+\usepackage[citestyle=authoryear-comp,natbib=true]{biblatex}
 \usepackage{pdflscape}
 \usepackage[absolute]{textpos}
 \usepackage{rotating} %for xtable sideways
 \usepackage{verbatim}
 \usepackage{longtable}
 \usepackage{lipsum}
+\usepackage{fancyhdr, graphicx, lastpage, ifthen, lscape, xcolor}
 
 \bibliography{$bibliography$}
 
@@ -99,7 +94,7 @@ $endif$
     \begin{textblock}{1}(0.7,1.5){\color{gray}\rotatebox{90}{$shorttitle$}}\end{textblock}
     \end{footnotesize} }
     \fancyfoot[L]{\begin{footnotesize}
-    \begin{textblock}{1}(21,1.75){\color{gray}\rotatebox{90}{Page \thepage{}~of~\pageref{LastPage}}}\end{textblock}
+    \begin{textblock}{1}(21,1.75){\color{gray}\rotatebox{90}{Page \thepage{}~of~\totalpages}}\end{textblock}
     \end{footnotesize} }
     \fancyfoot[R]{\begin{footnotesize}
 %     \begin{textblock}{19.8}[-0.01,{\DynLength}](1.5,23.20){\color{gray}\rotatebox{90}{\Rver}}\end{textblock}
@@ -115,7 +110,7 @@ $endif$
 \renewcommand{\footrulewidth}{0.8pt}
 \fancyhead[R]{\includegraphics[width=3cm]{./Fred_Hutch_Logo_2014.png}}
 \fancyhead[L]{\em Vaccine and Immunology Statistical Center\\ Statistical Center for HIV AIDS Research and Prevention}
-\fancyfoot[C]{Page \thepage{}~of~\pageref{LastPage}}
+\fancyfoot[C]{Page \thepage{}~of~\totalpages}
 
 %decrease margins for landscape pages
 \newenvironment{changemargin}[2]{%
@@ -186,12 +181,10 @@ $summary$
 $if(lof)$
 \listoffigures
 \listoftables
-\listofsuppfigures
-\listofsupptables
 $endif$
 
 $body$
-
+\label{LastPageOfBackMatter}~
 \end{document}
 
 
