@@ -15,8 +15,8 @@ cc:
 summary: 
   A short summary about your report. 
 bibliography: bibliography.bib
-endfloat: 
-  opts: lists
+lof: no
+toc: no
 output: scharpTemplates::visc_report
 ---
 

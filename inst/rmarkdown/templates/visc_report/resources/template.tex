@@ -1,9 +1,6 @@
 \documentclass[11pt]{article}
-\usepackage[page]{totalcount}
+\usepackage{lastpage}
 \usepackage[hmargin=2cm, top=2.7cm, bottom=3.5cm, footskip=0.5cm]{geometry}
-$if(endfloat)$
-\usepackage[$endfloat.opts$]{endfloat}
-$endif$
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{float}
@@ -15,6 +12,7 @@ $endif$
 \usepackage{verbatim}
 \usepackage{longtable}
 \usepackage{lipsum}
+\usepackage[acronym,nomain]{glossaries}
 \usepackage{fancyhdr, graphicx, lastpage, ifthen, lscape, xcolor}
 
 \bibliography{$bibliography$}
@@ -94,7 +92,7 @@ $endif$
     \begin{textblock}{1}(0.7,1.5){\color{gray}\rotatebox{90}{$shorttitle$}}\end{textblock}
     \end{footnotesize} }
     \fancyfoot[L]{\begin{footnotesize}
-    \begin{textblock}{1}(21,1.75){\color{gray}\rotatebox{90}{Page \thepage{}~of~\totalpages}}\end{textblock}
+    \begin{textblock}{1}(21,1.75){\color{gray}\rotatebox{90}{Page \thepage{}~of~\pageref{LastPage}}}\end{textblock}
     \end{footnotesize} }
     \fancyfoot[R]{\begin{footnotesize}
 %     \begin{textblock}{19.8}[-0.01,{\DynLength}](1.5,23.20){\color{gray}\rotatebox{90}{\Rver}}\end{textblock}
@@ -110,7 +108,7 @@ $endif$
 \renewcommand{\footrulewidth}{0.8pt}
 \fancyhead[R]{\includegraphics[width=3cm]{./Fred_Hutch_Logo_2014.png}}
 \fancyhead[L]{\em Vaccine and Immunology Statistical Center\\ Statistical Center for HIV AIDS Research and Prevention}
-\fancyfoot[C]{Page \thepage{}~of~\totalpages}
+\fancyfoot[C]{Page \thepage{}~of~\pageref{LastPage}}
 
 %decrease margins for landscape pages
 \newenvironment{changemargin}[2]{%
@@ -128,7 +126,7 @@ $endif$
 \setlength{\footskip}{56pt}
 \pagestyle{fancy}
 \setlength{\parindent}{0pt}
-
+\makeglossaries
 \begin{document}
 
 
@@ -182,6 +180,8 @@ $if(lof)$
 \listoffigures
 \listoftables
 $endif$
+
+\printglossaries
 
 $body$
 \label{LastPageOfBackMatter}~
