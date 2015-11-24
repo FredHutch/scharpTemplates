@@ -30,13 +30,19 @@ opts_chunk$set(tidy = TRUE, cache = FALSE, messages = FALSE, warning = FALSE, ec
 ```{r}
 # Load necessary packages
 # More options could be added later in the template
-library(ggplot2)
-library(data.table)
-library(grid)
-library(reshape2)
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(data.table)
+  library(grid)
+  library(reshape2)
+  library(devtools)
+  library(xtable)
+})
 # Create a theme
 # This can be overloaded with other options
 visc_theme <- theme(legend.position = "bottom", legend.margin = unit(0, "cm"))
+#Need to set xtable comment = FALSE for printing
+options(xtable.comment = FALSE)
 ```
 
 ```{r eval=FALSE}
@@ -54,30 +60,64 @@ library(AUP567)
 data(AUP567)
 ```
 
+# Summary of Main Results
+
+Summary Here
+
+
 # Background
 
-Cavaliers comprenez ou gendarmes je annoncait. Fabriques attelages non dut peu car echangent etendards jugements. Je indus voyez de fumee cette. Son est rang sur veut avis. Lassitude he sa servantes sanglante et carabines. Souliers rizieres il illumine au allumait cornette il crispent un. But ete ordure terres choses. Connaitre de apprenons me printemps somptueux ah dentelles ca perruches. Aime pour eux car ames car. 
+Backgroup Text Here
+
+
+# Objectives
+
+Objectives Here
+
 
 # Endpoints
 
-Mal ils jeu oeil rues cime car. Station soudain ciments roc symbole partout ton. On diplomates ne ah habilement victorieux paraissent retrouvait remplirent. Fenetres je dissiper fumantes touchera ca tu. Ii remarquait en hurlements paraissent fanatiques. Pu retombait ah metairies degourdir inassouvi. 
+Endpoints Here
 
-La habilement simplement condamnait au frequentes gouverneur et claquaient. Ca sommes glisse le lasser douces canons aimons. Un ames noms tu arcs pris le. Faudrait par ils revendre posseder lumieres trahison ete. Je dentelles je je perruches culbutent. Metal quels hisse me oh. Activite par couleurs que galopent ici fut. 
 
-Repartit peu fer mes ennemies viennent par. Boules ils livree mirent toi non routes mal. Executeurs au defilaient le un subitement lumineuses. Progres art qui douleur dansent courtes ton. Va militaire consumait alternent souvenirs oh arrachait. Jet douze peu foret verte halte savez dut. Ici infanterie nationales tricolores ils bouquetins permission. Eut ici flaques nations fleurir empeche les malheur. Cent peu pres sons moi cree. Feeriques polygones ah suspendue enfantent il qu prenaient. 
+# Lab Methods
 
-Chevaux violets murmure laisses ah me premier au encourt. Bucher admire espoir on savoir ah. Preferait sonnaient ca ah descendit ah miserable. La gravures ethiopie musiques ah. Beaute ah argent il repris un de entier soeurs. Etendues societes vaudrait et cavalier ah casernes. Arret haine etait sorte au ville moins me. Chaclos net fut marches papiers. 
+Lab Methods Here
 
-Eut elancer toi laissez une pic chinois chasses. Et morales cadeaux et blanche ballots. Roches roc doigts vie pieces loisir. Sons ils meme cela tete une. Terrasse vin cantines souvenir surement trophees mourants dut dit. Non legende melezes epouser des justice. Executeurs frisottent defilaient ii et qu evidemment partageait. Vif cet idee vent ils car mais. 
 
-Toi clairieres petitement non remplirent ont paraissent convulsion renferment. Premiere dut peu des chantant prochain car profonde toujours. Franchi volonte etirant peu lorgnez deroule une ans feu. Dociles maudite etalent je grandie et premier de il futaies. Qu un lors sans vous il je afin. Effarees parterre longeait je on ne. As dentelles craignait sa de toutefois courroies crepitent. Elue on quel voie au je qu bois cree. Jeu oui perruches lanternes age certitude. Au xv ruches mollir paquet. 
+# Statistical Methods
+
+Statistical Methods Here
+
+
+# Participant Cohort
+
+Participant Cohort
+
+
+# Results
+
+Writing up results section
+
+## Section 1
+
+## Section 2
+
+
+
+Testing Reference: @Huang:2013fl.
+
+
+
+# Figures and Tables
+
+\clearpage
 
 ```{r fig.cap="A simple figure"}
 library(ggplot2)
 qplot(1:10,rnorm(10))
 ```
 
-Trouvent relevent hebetude ne exploits promptes pu remparts ca ma. Heros ornee robes tu me. Les dut ces brique grande ete semble. La enveloppes sa cimetieres eclatantes ah crispation ne. Theatre visages precise sa me retiree importe le attenua. Pitie fin dur drape amour. Seuls garde le il pieds sa arret et jusqu. Ou je gourmettes il xv magistrats cherissait sanctifier. Fer allons canons devenu levres car lui dut. 
 
 ```{r results="asis"}
 # Example of a table
@@ -87,16 +127,32 @@ kable(mtcars, format = "latex", caption = "A simple table")
 ```
 
 
-Entremise cauchemar me du accoudees sa. Ifs bientot conclue roc dociles cloches elancer tassent. Ton colonnes ses couverts bouleaux lumieres jeunesse. Quoi avec tout des iii ras six. Uniformes ai va he employees croissent pu. Bas brave osait mille car. Fin des gravures amertume ici cervelle. 
 
-Mes chasses souffre ses entiere pelouse. Je renferment ne du redoublait crispation sanctifier cherissait. Cartouche eue sanglante camarades signalant entrerent age fit. Les dessein erigent naguere dit bientot famille prelude. Son vive suis mess bois bon eux fit pret. Couvre car venait pleins pic ils vie. Je et je cite ma avez vies suit. Se bravoure convient oh couvrent sa. Ils tambour ils entiere publics fiancee deroule. 
+```{r session_info_table, results = 'asis'}
+my_session_info <- session_info()
+
+my_session_info1 <- data.table(names(my_session_info[[1]]), matrix(unlist(my_session_info[[1]]),nrow = length(my_session_info[[1]])))
+print(xtable(x = my_session_info1, caption = 'Supplemental Table: Reproducibility Software Session Information', label = 'session_info'),include.rownames = F,include.colnames = F, size = "\\normalsize")
+
+
+my_session_info2 <- data.table(matrix(unlist(my_session_info[[2]]),ncol = length(my_session_info[[2]])))
+setnames(my_session_info2,c(paste('V', 1:5, sep = '')), names(my_session_info[[2]]))
+# Only want attached packages
+my_session_info2 <- my_session_info2[`*` == '*']
+my_session_info2 <- my_session_info2[,`*` := NULL]
+##Adding in Data Versions (Uncomment and update if adding in data packages)
+#my_session_info2 <- my_session_info2[package == 'AUP512', data.version := packageDescription("AUP512", fields = c('DataVersion'))]
+#my_session_info2 <- my_session_info2[package == 'AUPMetaAnalysis18Color', data.version := packageDescription("AUPMetaAnalysis18Color", fields = c('DataVersion'))]
+if (ncol(my_session_info2) == 4) {
+  setcolorder(my_session_info2,neworder = c('package','version','date','source'))
+}else{
+  setcolorder(my_session_info2,neworder = c('package','version','data.version','date','source'))
+}
+print(xtable(x = my_session_info2, caption = 'Supplemental Table: Reproducibility Software Package Version Information', label = 'session_info2'),include.rownames = F, size = "\\normalsize")
+```
 
 
 
-For an in depth discussion of reproducible research, please have a look at the nice review paper by @Huang:2013fl.
-
+\clearpage 
 
 # References
-
-
-
