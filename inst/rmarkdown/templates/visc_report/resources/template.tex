@@ -135,18 +135,27 @@
 \let\insertdate\@date
 \makeatother
 
-
 %begin To and From Section
+\makeatletter
+\newcommand\tabfill[1]{%
+  \dimen@\linewidth
+  \advance\dimen@\@totalleftmargin
+  \advance\dimen@-\dimen\@curtab
+  \parbox[t]\dimen@{%
+    \leftskip=2em\hspace*{-2em}#1\ifhmode\strut\fi}%
+}
+\makeatother
+
 \vspace{0.1cm}
 \begin{flushleft}
 \begin{tabbing}
 this line is to\= set up the tab stop \kill
-{\bf Date:} \> \insertdate \\
-{\bf To:} \>  $for(to)$$to.name$$sep$, $endfor$\\
-{\bf From:} \> $for(from)$$from.name$$sep$, $endfor$\\
-{\bf RE:} \> $title$ \\
-{\bf cc:} \> $for(cc)$$cc.name$$sep$, $endfor$ \\
-{\bf Contact:} \> $for(from)$$if(from.contact)$$from.name$, $from.email$$endif$ $endfor$\\
+{\bf Date:} \> \insertdate\\
+{\bf To:} \>  \tabfill{$for(to)$$to.name$$sep$, $endfor$}\\
+{\bf From:} \> \tabfill{$for(from)$$from.name$$sep$, $endfor$}\\
+{\bf RE:} \> \tabfill{$title$}\\
+{\bf cc:} \> \tabfill{$for(cc)$$cc.name$$sep$, $endfor$}\\
+{\bf Contact:} \> \tabfill{$for(from)$$if(from.contact)$$from.name$, $from.email$$endif$ $endfor$}\\
 \end{tabbing}
 \end{flushleft}
 
