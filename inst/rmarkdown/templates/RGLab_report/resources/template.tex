@@ -109,6 +109,8 @@
 \fancyhead[R]{\includegraphics[width=3cm]{./Fred_Hutch_Logo_2014.png}}
 \fancyhead[L]{\em RGLab \\ Vaccine and Infectious Disease Division}
 \fancyfoot[C]{Page \thepage{}~of~\pageref{LastPage}}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 %decrease margins for landscape pages
 \newenvironment{changemargin}[2]{%
@@ -164,7 +166,6 @@ this line is to\= set up the tab stop \kill
 \patchcmd{\@fancyfoot}{\rlap}{\color{gray}\rlap}{}{}
 \patchcmd{\footrule}{\hrule}{\color{gray}\hrule}{}{}
 \makeatother
-
 
 
 \begin{abstract}
