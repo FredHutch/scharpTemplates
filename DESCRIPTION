@@ -1,15 +1,14 @@
 Package: scharpTemplates
 Type: Package
-Title: A gret template for VISC
-Version: 0.1
-Date: 2015-05-06
-Author: Who wrote it
+Title: A great template for VISC
+Version: 0.2
+Date: 2016-05-21
+Author: Greg Finak, Jimmy Fulp, Paul Obrecht
 Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
+Description: scharpTemplates -- sharp templates for SCHARP
 License: What license is it under?
 Collate: utils.R
   visc_report.R
   rglab_report.R
 Imports:
     rmarkdown
-

@@ -9,9 +9,16 @@ from:
 to:
  - name: FirstNameA LastNameA
  - name: FirstNameB LastNameB
+ - name: FirstNameC LastNameC
+ - name: FirstNameD LastNameD
+ - name: FirstNameE LastNameE
+ - name: FirstNameF LastNameF
 cc:
  - name: FirstNameA LastNameA
  - name: FirstNameB LastNameB
+ - name: FirstNameC LastNameC
+ - name: FirstNameD LastNameD
+ - name: FirstNameE LastNameE
 summary: 
   A short summary about your report. 
 bibliography: bibliography.bib
@@ -32,11 +39,11 @@ opts_chunk$set(tidy = TRUE, cache = FALSE, messages = FALSE, warning = FALSE, ec
 # More options could be added later in the template
 suppressPackageStartupMessages({
   library(ggplot2)
-  library(data.table)
   library(grid)
   library(reshape2)
   library(devtools)
   library(xtable)
+  library(data.table)
 })
 # Create a theme
 # This can be overloaded with other options
@@ -126,13 +133,30 @@ data(mtcars)
 kable(mtcars, format = "latex", caption = "A simple table")
 ```
 
+\clearpage 
 
 
 ```{r session_info_table, results = 'asis'}
 my_session_info <- session_info()
 
-my_session_info1 <- data.table(names(my_session_info[[1]]), matrix(unlist(my_session_info[[1]]),nrow = length(my_session_info[[1]])))
-print(xtable(x = my_session_info1, caption = 'Supplemental Table: Reproducibility Software Session Information', label = 'session_info'),include.rownames = F,include.colnames = F, size = "\\normalsize")
+my_session_info1 <- data.table(name = names(my_session_info[[1]]),
+                               value = matrix(unlist(my_session_info[[1]]),
+                                              nrow = length(my_session_info[[1]])))
+
+if (length(system("git remote -v", intern = TRUE)) == 0) {
+  # No Remote Connection, so just give absolute path
+  folder_info <- data.table(name = 'location', value = getwd())
+  my_session_info1 <- rbindlist(list(my_session_info1,folder_info))
+} else{
+  # Git Remote connection, so getting url and path
+  url_info <- data.table(name = 'repo', value = substr(remote <- system("git remote -v", intern = TRUE)[1], regexpr("\t", remote) + 1, regexpr(" ", remote) - 1))
+  repo_name <- strsplit(sub('\\.git','',url_info$value), '/')[[1]][length(strsplit(url_info$value, '/')[[1]])]
+  folder_info <- data.table(name = 'location', value = substr(getwd(),regexpr(repo_name, getwd()),nchar(getwd())))
+  my_session_info1 <- rbindlist(list(my_session_info1,url_info,folder_info))
+}
+print(xtable(x = my_session_info1,
+             caption = 'Supplemental Table: Reproducibility Software Session Information',
+             label = 'session_info'), include.rownames = F, include.colnames = F, size = "\\normalsize")
 
 
 my_session_info2 <- data.table(matrix(unlist(my_session_info[[2]]),ncol = length(my_session_info[[2]])))
@@ -140,18 +164,18 @@ setnames(my_session_info2,c(paste('V', 1:5, sep = '')), names(my_session_info[[2
 # Only want attached packages
 my_session_info2 <- my_session_info2[`*` == '*']
 my_session_info2 <- my_session_info2[,`*` := NULL]
-##Adding in Data Versions (Uncomment and update if adding in data packages)
-#my_session_info2 <- my_session_info2[package == 'AUP512', data.version := packageDescription("AUP512", fields = c('DataVersion'))]
-#my_session_info2 <- my_session_info2[package == 'AUPMetaAnalysis18Color', data.version := packageDescription("AUPMetaAnalysis18Color", fields = c('DataVersion'))]
-if (ncol(my_session_info2) == 4) {
-  setcolorder(my_session_info2,neworder = c('package','version','date','source'))
+##Adding in Data Versions
+my_session_info2 <- my_session_info2[, data.version := as.character(packageDescription(package, fields = c('DataVersion'))), by = package]
+if (my_session_info2[, all(is.na(data.version))]) {
+  my_session_info2 <- my_session_info2[, .(package,version,date,source)]
 }else{
+  my_session_info2[is.na(data.version), data.version := '']
   setcolorder(my_session_info2,neworder = c('package','version','data.version','date','source'))
 }
-print(xtable(x = my_session_info2, caption = 'Supplemental Table: Reproducibility Software Package Version Information', label = 'session_info2'),include.rownames = F, size = "\\normalsize")
+print(xtable(x = my_session_info2,
+             caption = 'Supplemental Table: Reproducibility Software Package Version Information',
+             label = 'session_info2'), include.rownames = F, size = "\\normalsize")
 ```
-
-
 
 \clearpage 
 
