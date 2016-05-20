@@ -165,7 +165,7 @@ if (gitremote == "") {
   my_session_info1 <- data.table::rbindlist(list(my_session_info1, folder_info, file_name))
 } else{
   # Git Remote connection, so getting url and path
-  all_git_files <- system('git ls-tree -r --name-only --full-tree master', intern = TRUE)
+  all_git_files <- system('git ls-files -co --no-empty-directory --full-name', intern = TRUE)
   folder_info_in <- sub(paste0('/', my_current_input), '',
                         all_git_files[grep(my_current_input, all_git_files)])
 
@@ -174,7 +174,6 @@ if (gitremote == "") {
   } else {
     folder_info_in <- folder_info_in[sapply(folder_info_in,
                                             function(x){length(grep(x, getwd())) == 1})]
-    folder_info_in <- ifelse(folder_info_in == "vignettes", "inst/doc", folder_info_in)
     }
   
   # Dropping matching file names that do not match folder path
@@ -230,6 +229,7 @@ setcolorder(my_session_info2, c('package', 'version', 'data version', 'date', 's
 xtab <- xtable(x = my_session_info2, caption = 'Supplemental Table: Reproducibility Software Package Version Information', label = 'session_info2')
 print(xtab, include.rownames = FALSE, size = "\\footnotesize")
 ```
+
 
 \clearpage 
 
