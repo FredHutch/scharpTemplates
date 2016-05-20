@@ -47,6 +47,7 @@
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
+\newcommand{\B}{\rule[-2ex]{0pt}{0pt}} % bottom strut
 \newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
 % Add ',fontsize=\small' for more characters per line
@@ -67,6 +68,8 @@
 \newcommand{\RegionMarkerTok}[1]{{#1}}
 \newcommand{\ErrorTok}[1]{\textbf{{#1}}}
 \newcommand{\NormalTok}[1]{{#1}}
+\providecommand{\tightlist}{%
+   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -313,7 +316,7 @@ Volvo 142E & 21.4 & 4 & 121.0 & 109 & 4.11 & 2.780 & 18.60 & 1 & 1 & 4 & 2\\
 
 \begin{table}[ht]
 \centering
-{\normalsize
+{\footnotesize
 \begin{tabular}{ll}
   \hline
   \hline
@@ -324,7 +327,8 @@ version & R version 3.2.1 (2015-06-18) \\
   collate & en\_US.UTF-8 \\ 
   tz &  \\ 
   repo & https://github.fhcrc.org/VIDD-VISC/scharpTemplates.git \\ 
-  location & scharpTemplates/inst/rmarkdown/templates/visc\_report/skeleton \\ 
+  location & inst/rmarkdown/templates/visc\_report/skeleton \\ 
+  file name & skeleton.Rmd \\ 
    \hline
 \end{tabular}
 }
@@ -332,14 +336,14 @@ version & R version 3.2.1 (2015-06-18) \\
 \label{session_info}
 \end{table}\begin{table}[ht]
 \centering
-{\normalsize
+{\footnotesize
 \begin{tabular}{llll}
   \hline
 package & version & date & source \\ 
   \hline
-data.table & 1.9.4 & 2014-10-02 & CRAN (R 3.2.1) \\ 
+data.table & 1.9.7 & 2016-04-29 & Github (Rdatatable/data.table@5c5067d) \\ 
   devtools & 1.8.0 & 2015-05-09 & CRAN (R 3.2.1) \\ 
-  ggplot2 & 1.0.1 & 2015-03-17 & CRAN (R 3.2.1) \\ 
+  ggplot2 & 2.1.0 & 2016-05-02 & Github (hadley/ggplot2@59c503b) \\ 
   knitr & 1.12.3 & 2016-01-22 & CRAN (R 3.2.1) \\ 
   reshape2 & 1.4.1 & 2014-12-06 & CRAN (R 3.2.1) \\ 
   xtable & 1.7-4 & 2014-09-12 & CRAN (R 3.2.1) \\ 

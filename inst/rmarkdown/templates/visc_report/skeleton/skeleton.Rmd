@@ -137,44 +137,98 @@ kable(mtcars, format = "latex", caption = "A simple table")
 
 
 ```{r session_info_table, results = 'asis'}
-my_session_info <- session_info()
+my_session_info <- devtools::session_info()
 
-my_session_info1 <- data.table(name = names(my_session_info[[1]]),
-                               value = matrix(unlist(my_session_info[[1]]),
-                                              nrow = length(my_session_info[[1]])))
+platform <- my_session_info[[1]]
+packages <- my_session_info[[2]]
 
-if (length(system("git remote -v", intern = TRUE)) == 0) {
+# TABLE 1
+my_session_info1 <- data.table::data.table(
+  name = names(platform),
+  value = matrix(unlist(platform), nrow = length(platform)))
+
+my_current_input <- ifelse(is.null(ci <- knitr::current_input()), 'No Input File Detected', ci)
+
+file_name <-  data.table::data.table(
+  name = 'file name',
+  value = my_current_input)
+
+gitremote <-  substr(remote <- system("git remote -v", intern = TRUE)[1],
+                     regexpr("\t", remote) + 1,
+                     regexpr(" ", remote) - 1)
+
+if (gitremote == "") {
   # No Remote Connection, so just give absolute path
-  folder_info <- data.table(name = 'location', value = getwd())
-  my_session_info1 <- rbindlist(list(my_session_info1,folder_info))
+  folder_info <- data.table(
+    name = 'location',
+    value = getwd())
+  my_session_info1 <- data.table::rbindlist(list(my_session_info1, folder_info, file_name))
 } else{
   # Git Remote connection, so getting url and path
-  url_info <- data.table(name = 'repo', value = substr(remote <- system("git remote -v", intern = TRUE)[1], regexpr("\t", remote) + 1, regexpr(" ", remote) - 1))
-  repo_name <- strsplit(sub('\\.git','',url_info$value), '/')[[1]][length(strsplit(url_info$value, '/')[[1]])]
-  folder_info <- data.table(name = 'location', value = substr(getwd(),regexpr(repo_name, getwd()),nchar(getwd())))
-  my_session_info1 <- rbindlist(list(my_session_info1,url_info,folder_info))
+  all_git_files <- system('git ls-tree -r --name-only --full-tree master', intern = TRUE)
+  folder_info_in <- sub(paste0('/', my_current_input), '',
+                        all_git_files[grep(my_current_input, all_git_files)])
+
+  if(length(folder_info_in)==0){
+    folder_info_in <- 'No Location Detected'
+  } else {
+    folder_info_in <- folder_info_in[sapply(folder_info_in,
+                                            function(x){length(grep(x, getwd())) == 1})]
+    folder_info_in <- ifelse(folder_info_in == "vignettes", "inst/doc", folder_info_in)
+    }
+  
+  # Dropping matching file names that do not match folder path
+  folder_info <- data.table::data.table(
+    name = 'location',
+    value = folder_info_in)
+  url_info <- data.table::data.table(
+    name = 'repo',
+    value = gitremote)
+
+  my_session_info1 <- data.table::rbindlist(list(my_session_info1, url_info, folder_info, file_name))
 }
-print(xtable(x = my_session_info1,
-             caption = 'Supplemental Table: Reproducibility Software Session Information',
-             label = 'session_info'), include.rownames = F, include.colnames = F, size = "\\normalsize")
+
+xtab <- xtable(x = my_session_info1,
+               caption = 'Supplemental Table: Reproducibility Software Session Information',
+               label = 'session_info')
+print(xtab, include.rownames = FALSE, include.colnames = FALSE, size = "\\footnotesize")
 
 
-my_session_info2 <- data.table(matrix(unlist(my_session_info[[2]]),ncol = length(my_session_info[[2]])))
-setnames(my_session_info2,c(paste('V', 1:5, sep = '')), names(my_session_info[[2]]))
-# Only want attached packages
-my_session_info2 <- my_session_info2[`*` == '*']
-my_session_info2 <- my_session_info2[,`*` := NULL]
-##Adding in Data Versions
-my_session_info2 <- my_session_info2[, data.version := as.character(packageDescription(package, fields = c('DataVersion'))), by = package]
-if (my_session_info2[, all(is.na(data.version))]) {
-  my_session_info2 <- my_session_info2[, .(package,version,date,source)]
-}else{
+# TABLE 2
+my_session_info2 <- data.table::data.table(
+  matrix(unlist(packages), ncol = length(packages))
+  )[V2=='*'][, V2 := NULL] # Only want attached packages
+data.table::setnames(my_session_info2, c(paste('V', c(1, 3, 4, 5), sep = '')), names(packages)[-2])
+
+# Adding in Data Versions
+if(nrow(my_session_info2)>0){
+  my_session_info2[, data.version := as.character(packageDescription(package, fields = 'DataVersion')), by = package]
+}
+
+if(my_session_info2[, all(is.na(data.version))]){
+  my_session_info2 <- my_session_info2[, .(package, version, date, source)]
+} else {
   my_session_info2[is.na(data.version), data.version := '']
-  setcolorder(my_session_info2,neworder = c('package','version','data.version','date','source'))
+  setcolorder(my_session_info2, c('package', 'version', 'data.version', 'date', 'source'))
 }
-print(xtable(x = my_session_info2,
-             caption = 'Supplemental Table: Reproducibility Software Package Version Information',
-             label = 'session_info2'), include.rownames = F, size = "\\normalsize")
+
+# if this is a vignette in a package, add the data package without loading it
+if(grepl("vignettes", getwd()) & file.exists('../DESCRIPTION')){
+  thisRow <- my_session_info2[1]
+  rd <- roxygen2:::read.description("../DESCRIPTION")
+  thisRow[,
+          `:=`(package = rd$Package,
+               version = rd$Version,
+               `data version` = rd$DataVersion,
+               date = rd$Date,
+               source = url_info$value)]
+
+my_session_info2 <- rbindlist(list(my_session_info2, thisRow), use.names=TRUE, fill=TRUE)
+setcolorder(my_session_info2, c('package', 'version', 'data version', 'date', 'source'))
+}
+
+xtab <- xtable(x = my_session_info2, caption = 'Supplemental Table: Reproducibility Software Package Version Information', label = 'session_info2')
+print(xtab, include.rownames = FALSE, size = "\\footnotesize")
 ```
 
 \clearpage 
