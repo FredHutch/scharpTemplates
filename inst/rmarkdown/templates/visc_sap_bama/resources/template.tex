@@ -1,24 +1,24 @@
 \documentclass[11pt]{article}
+\usepackage{lastpage}
+\usepackage[hmargin=2cm, top=2.7cm, bottom=3.5cm, footskip=0.5cm]{geometry}
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{float}
-\usepackage{xcolor, color, pdfcolmk}
+\usepackage{parskip}
 \usepackage[citestyle=authoryear-comp,natbib=true]{biblatex}
-\usepackage[hmargin=2cm, top=2.7cm, bottom=3.5cm, footskip=0.5cm]{geometry}
-\usepackage{fancyhdr, graphicx, lastpage, ifthen, lscape, xcolor}
-\usepackage{etoolbox}
 \usepackage{pdflscape}
-\usepackage{pdfpages}
-\usepackage{lscape}
 \usepackage[absolute]{textpos}
 \usepackage{rotating} %for xtable sideways
 \usepackage{verbatim}
 \usepackage{longtable}
 \usepackage{lipsum}
+\usepackage[acronym,nomain]{glossaries}
+\usepackage{fancyhdr, graphicx, lastpage, ifthen, lscape}
+\usepackage[table]{xcolor}
+
 \bibliography{$bibliography$}
 
 
-% For knitr
 % For knitr
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
@@ -32,12 +32,9 @@
     \usepackage{mathspec}
     \usepackage{xltxtra,xunicode}
   \else
-    \usepackage{fontspec,xltxtra,xunicode}
+    \usepackage{fontspec}
   \fi
   \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
-  \setromanfont[Mapping=tex-text]{Hoefler Text}
-  \setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Gill Sans}
-  \setmonofont[Scale=MatchLowercase]{Andale Mono}
   \newcommand{\euro}{€}
 \fi
 % use upquote if available, for straight quotes in verbatim environments
@@ -50,6 +47,7 @@
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
+\newcommand{\B}{\rule[-2ex]{0pt}{0pt}} % bottom strut
 \newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
 % Add ',fontsize=\small' for more characters per line
@@ -70,19 +68,14 @@
 \newcommand{\RegionMarkerTok}[1]{{#1}}
 \newcommand{\ErrorTok}[1]{\textbf{{#1}}}
 \newcommand{\NormalTok}[1]{{#1}}
-\usepackage{graphicx}
+\providecommand{\tightlist}{%
+   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
 % End For knitr
 
 \renewcommand{\abstractname}{Overview}
-
-%pandoc doesn't parse latex environments
-\newcommand{\blandscape}{\begin{landscape}}
-
-\newcommand{\elandscape}{\end{landscape}}
-
 
 
 % Configure hyperref formatting bookmarks and references
@@ -115,11 +108,10 @@
 %set header and footer for first page
 \renewcommand{\headrulewidth}{0.8pt}
 \renewcommand{\footrulewidth}{0.8pt}
-\fancyhead[R]{\includegraphics[width=3cm]{./Fred_Hutch_Logo_2014.png}}
-\fancyhead[L]{\em RGLab \\ Vaccine and Infectious Disease Division}
+\fancyhead[L]{\includegraphics[height=0.8cm]{./logos/scharp.png}}
+\fancyhead[C]{\includegraphics[height=0.8cm]{./logos/new_VISC_logo_color.jpg}}
+\fancyhead[R]{\includegraphics[height=0.8cm]{./logos/FredHutch_h_tag_4col_CMYK_tm.png}}
 \fancyfoot[C]{Page \thepage{}~of~\pageref{LastPage}}
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 %decrease margins for landscape pages
 \newenvironment{changemargin}[2]{%
@@ -137,7 +129,7 @@
 \setlength{\footskip}{56pt}
 \pagestyle{fancy}
 \setlength{\parindent}{0pt}
-
+\makeglossaries
 \begin{document}
 
 
@@ -146,18 +138,27 @@
 \let\insertdate\@date
 \makeatother
 
-
 %begin To and From Section
+\makeatletter
+\newcommand\tabfill[1]{%
+  \dimen@\linewidth
+  \advance\dimen@\@totalleftmargin
+  \advance\dimen@-\dimen\@curtab
+  \parbox[t]\dimen@{%
+    \leftskip=2em\hspace*{-2em}#1\ifhmode\strut\fi}%
+}
+\makeatother
+
 \vspace{0.1cm}
 \begin{flushleft}
 \begin{tabbing}
 this line is to\= set up the tab stop \kill
-{\bf Date:} \> \insertdate \\
-{\bf To:} \>  $for(to)$$to.name$$sep$, $endfor$\\
-{\bf From:} \> $for(from)$$from.name$$sep$, $endfor$\\
-{\bf RE:} \> $title$ \\
-{\bf cc:} \> $for(cc)$$cc.name$$sep$, $endfor$ \\
-{\bf Contact:} \> $for(from)$$if(from.contact)$$from.name$, $from.email$$endif$ $endfor$\\
+{\bf Date:} \> \insertdate\\
+{\bf To:} \>  \tabfill{$for(to)$$to.name$$sep$, $endfor$}\\
+{\bf From:} \> \tabfill{$for(from)$$from.name$$sep$, $endfor$}\\
+{\bf RE:} \> \tabfill{$title$}\\
+{\bf cc:} \> \tabfill{$for(cc)$$cc.name$$sep$, $endfor$}\\
+{\bf Contact:} \> \tabfill{$for(from)$$if(from.contact)$$from.name$, $from.email$$endif$ $endfor$}\\
 \end{tabbing}
 \end{flushleft}
 
@@ -166,7 +167,9 @@ this line is to\= set up the tab stop \kill
 \vspace{2cm}
 
 %begin contents section
-%\tableofcontents
+$if(toc)$
+\tableofcontents
+$endif$
 
 %change color of header and footer text to gray
 \makeatletter
@@ -177,17 +180,24 @@ this line is to\= set up the tab stop \kill
 \makeatother
 
 
+
 \begin{abstract}
 $summary$
 \end{abstract}
 
 \newpage
 \fancyhead[R]{\em $shorttitle$}
-\fancyhead[L]{\em RGLab report}
+\fancyhead[C]{}
+\fancyhead[L]{\em VISC Statistical Analysis Plan (BAMA)}
+$if(lof)$
+\listoffigures
+\listoftables
+$endif$
 
+\printglossaries
 
 $body$
-
+\label{LastPageOfBackMatter}~
 \end{document}
 
 

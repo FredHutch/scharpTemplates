@@ -1,0 +1,148 @@
+---
+title: "BAMA Statistical Analysis Plan"
+shorttitle: "BAMA Statistical Analysis Plan For Study XXXX"
+from:
+ - name: FirstNameA LastNameA
+   email: foo@bar.com
+   contact: yes
+ - name: FirstNameB LastNameB
+to:
+ - name: Georgia Tomaras
+ - name: Nicole Yates
+ - name: FirstNameC LastNameC
+ - name: FirstNameD LastNameD
+ - name: FirstNameE LastNameE
+ - name: FirstNameF LastNameF
+cc:
+ - name: FirstNameA LastNameA
+ - name: FirstNameB LastNameB
+ - name: Michelle Chung
+ - name: Eva Chung
+ - name: April Randhawa
+ - name: Alicia Sato
+summary: 
+  A short summary about your report. 
+bibliography: bibliography.bib
+lof: no
+toc: no
+output: scharpTemplates::visc_sap_bama
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile),  paste0('REPORTNAME_SAP-DRAFT_BAMA', format(Sys.Date(), "%d%b%Y"), '.pdf')))})
+---
+
+```{r echo=FALSE, eval=TRUE}
+library(knitr)
+# Set some knitr options
+# This will always generate two figures (pdf and png, which can be handy for presentations)
+opts_chunk$set(tidy = TRUE, cache = FALSE, messages = FALSE, warning = FALSE, echo = FALSE, dev = c("pdf", "png"), dpi = 200)
+```
+
+```{r}
+# Load necessary packages
+# More options could be added later in the template
+   
+suppressPackageStartupMessages({
+  library(knitr)
+  library(Hmisc)
+  library(xtable)
+  library(data.table)
+  library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+  library(reshape2)
+  library(scales)
+  library(devtools)
+  })
+
+opts_chunk$set(tidy = TRUE, cache = FALSE, message = TRUE, warning = TRUE, echo = FALSE, dev = c("pdf", "png"), dpi = 200, fig.pos = 'htbp', fig.height = 5)
+options(xtable.comment = FALSE)
+
+# Create a theme
+# This can be overloaded with other options
+visc_theme <- theme(legend.position = "bottom", legend.margin = unit(0, "cm"))
+```
+
+```{r eval=FALSE}
+# Update for your report
+# Load data package
+# library(datapackagename)
+# Load data
+# data("dataset")
+```
+
+# Background
+
+Describe the trial here
+
+# Objectives
+
+Objectives Here
+
+## Primary objectives
+
+List primary objectives
+1. 
+2.
+
+# Statistical Methods
+
+## Biological data
+
+Describe the assay:
+
+Serum HIV-1 IgG titers were measured against XX antigens using the binding antibody multiplex assay (BAMA). Titer levels are measured as median fluoresence intensity (MFI). Background adjustment is done using MFI measured in a blank (no sample) well. Additionally, a blank or reference bead is included in the sample wells to estimate non-specific antibody binding. Results were obtained for a single dilution of 1:xx.
+
+## Statistical endpoints
+
+### Definition of a positive response
+The positivity of a response is defined based on background-adjusted blank subtracted MFI values at the screening dilution level where MFI cut-offs are determined by the lab. Samples from post-enrollment visits are declared to have a positive binding antibody response by BAMA if they meet three conditions:
+
+1. Background-adjusted MFI minus background-adjusted Blank values at the screening dilution are greater than a lab determined cut-off (Table \ref{positive_calls}).
+2. Background-adjusted MFI minus background-adjusted Blank values are greater than 3 times the baseline MFI minus Blank values.
+3. Background-adjusted MFI values are greater than 3 times the baseline background-adjusted MFI values.
+
+
+```{r, results = 'asis', eval = F}
+#Update with positivity cutoffs for the relevant study
+#library(readxl)
+#cutoff_data = read_excel("Positivity_cutoffs_Schlesinger_TP_022_IgG_IgGsubclass.xlsx", sheet = 2) %>% t()
+#print(xtable(cutoff_data,  caption = "MFI Cutoffs"), comment = FALSE, include.colnames = F, size = "\\small")
+```
+
+### Response magnitude
+\label{magnitude}
+
+Log$_10$ MFI will be used to compare response magnitudes. As an additional measure of durability, we will calculate the percent change between log_${10}$ background-adjusted blank subtracted MFI measurements ($\Delta$) between weeks X and XX, among responders at week X only, as follows:
+
+$$\mathrm{\% change} = 100 * \frac{log_{10}\Delta_{wkx} - log_{10}\Delta{wkx}}{log_{10}\Delta{wkxx}}$$
+
+## Graphical analysis
+
+Response rates will be plotted, with accompanying Wilson score confidence intervals, for each experimental group, time point, and antigen. Accompanying tables of response rates, with sample sizes and confidence intervals, will also be provided.
+
+Distributions of log-transformed background-adjusted blank subtracted MFI will be plotted for each time point and antigen with box plots superimposed on the distributions of responders. The mid-line of the box denotes the median and the ends of the box denote the $25^{th}$ and $75^{th}$ percentiles. The whiskers denote the most extreme data points that are no more than 1.5 times the interquartile range (i.e., height of the box). Accompanying tables of descriptive statistics will also be provided. Distributions of percent change between weeks 26 and 36 (see Section \ref{magnitude}) will also be displayed as boxplots.
+
+Lines plot of log-transformed background-adjusted blank subtracted MFI will be plotted over time colored by study groups for each antigen to show response trends over time.
+
+## Statistical tests
+
+To assess if two groups have different response rates, pairwise group comparisons are conducted using Fisher’s exact test for each time point and antigen. 
+
+For response magnitudes, comparisons between experimental groups will be performed using Wilcoxon sum rank test for each time point and antigen. Response magnitudes will be compared among responders only. Because the calculation is only performed on responders, each group must have at least 3 responders for the comparison to be conducted. 
+
+Pairwise comparisons of the percent change between X and XX  will be performed between groups using the Wilcoxon rank-sum test for each antigen. Because the calculation is only performed on responders at week X, each group must have at least 3 responders for the comparison to be conducted.
+
+The False Discovery Rate method will be used to correct for multiple testing.
+
+
+## Statistical comparisons
+\label{comparisons}
+
+Update according to primary objectives of this study:
+Example:
+With respect to the primary objectives, the following comparisons will be performed: 
+
+- For primary objective 1, comparisons will be made between the vaccine groups and their corresponding placebo group paired by \emph{S. mansoni} infection status at weeks 6 (2 weeks post 2nd immunization), 26 (2 weeks post 3rd (last) immunization), and 36 (12 weeks post 3rd (last) immunization). This evaluates the immunogenicity of the vaccine regimen separately by \emph{S. mansoni} infection status. One-sided tests will be used to test for improvement over the placebo groups.
+
+- For primary objective 2, comparisons will be performed between the two vaccine groups at weeks 6 (2 weeks post 2nd immunization), 26 (2 weeks post 3rd (last) immunization), and 36 (12 weeks post 3rd (last) immunization). This directly evaluates the effect of \emph{S. mansoni} infection on immunogenicity. Additionally, the effect of \emph{S. mansoni} infection on durability will be tested by comparing the percent change in response magnitude between weeks 26 and weeks 36 (see Section \ref{magnitude}) between the two vaccine groups for each viral isolate.
+
+
