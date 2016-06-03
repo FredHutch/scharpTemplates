@@ -222,12 +222,22 @@ if(grepl("vignettes", getwd()) & file.exists('../DESCRIPTION')){
                date = rd$Date,
                source = url_info$value)]
 
+# if local repo path is too long, break it into two lines
+# (this assumes that it doesn't need to wrap to 3 lines)
+if(nchar(thisRow$source) > 60){
+  slashes <- gregexpr("/", thisRow$source, fixed=TRUE)[[1]]
+  p1 <- substr(thisRow$source, 1, slashes[which(slashes>30)][1])
+  p2 <- substr(thisRow$source, slashes[which(slashes>30)][1]+1, 500)
+  newsource <- gsub("_", "\\_", paste0(p1, " \\\\ \n", p2), fixed=TRUE)
+  thisRow$source <- paste0("\\parbox[t]{3in}{", newsource, "}")
+}
+
 my_session_info2 <- rbindlist(list(my_session_info2, thisRow), use.names=TRUE, fill=TRUE)
 setcolorder(my_session_info2, c('package', 'version', 'data version', 'date', 'source'))
 }
 
 xtab <- xtable(x = my_session_info2, caption = 'Supplemental Table: Reproducibility Software Package Version Information', label = 'session_info2')
-print(xtab, include.rownames = FALSE, size = "\\footnotesize")
+print(xtab, include.rownames = FALSE, size = "\\footnotesize", sanitize.text.function=function(x){x})
 ```
 
 
