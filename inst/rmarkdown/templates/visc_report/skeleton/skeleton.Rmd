@@ -22,10 +22,20 @@ cc:
 summary: 
   A short summary about your report. 
 bibliography: bibliography.bib
-lof: no
-toc: no
+lof: yes
+lot: yes
+toc: yes
 output: scharpTemplates::visc_report
 ---
+
+<!---
+Program Name:
+Creation Date:
+Full name of author:
+Project or Protocol:
+Purpose or description of program:
+Location of program:
+--->
 
 ```{r echo=FALSE, eval=TRUE}
 library(knitr)
