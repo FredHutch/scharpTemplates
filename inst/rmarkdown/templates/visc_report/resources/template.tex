@@ -6,7 +6,7 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{float}
-\usepackage[maxfloats=50]{morefloats}
+%\usepackage[maxfloats=50]{morefloats}
 \usepackage{parskip}
 \usepackage[citestyle=authoryear-comp,natbib=true]{biblatex}
 \usepackage{pdflscape}
@@ -140,6 +140,10 @@
 \makeatletter
 \let\insertdate\@date
 \makeatother
+
+% workaround to use landscape environment with pandoc
+\newcommand{\blandscape}{\begin{landscape}}
+\newcommand{\elandscape}{\end{landscape}}
 
 %begin To and From Section
 \makeatletter
