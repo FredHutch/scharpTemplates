@@ -148,6 +148,9 @@ kable(mtcars, format = "latex", caption = "A simple table")
 
 
 ```{r session_info_table, results = 'asis'}
+#loading in rmarkdown so we can capture verison number
+if (any(installed.packages()[,1] == 'rmarkdown')) library(rmarkdown)
+
 my_session_info <- devtools::session_info()
 
 platform <- my_session_info[[1]]
