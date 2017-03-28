@@ -42,7 +42,7 @@ Location of program:
 library(knitr)
 # Set some knitr options
 # This will always generate two figures (pdf and png, which can be handy for presentations)
-opts_chunk$set(tidy = TRUE, cache = FALSE, messages = FALSE, warning = FALSE, echo = FALSE, dev = c("pdf", "png"), dpi = 200)
+opts_chunk$set(tidy = TRUE, cache = FALSE, messages = FALSE, warning = FALSE, echo = FALSE, dev = c("png", "pdf"), dpi = 200)
 ```
 
 ```{r}
@@ -171,7 +171,7 @@ gitremote <-  substr(remote <- system("git remote -v", intern = TRUE)[1],
                      regexpr("\t", remote) + 1,
                      regexpr(" ", remote) - 1)
 
-if (gitremote == "") {
+if (is.na(gitremote) | gitremote == "") {
   # No Remote Connection, so just give absolute path
   folder_info <- data.table(
     name = 'location',

@@ -7,3 +7,8 @@ visc_report <- function(latex_engine = "pdflatex") {
 
 }
 
+render2x <- function(path, filename){
+  toRender <- file.path(path, filename)
+  rmarkdown::render(toRender, output_format = 'word_document', output_options=list(fig_caption = TRUE, fig_height = 5, fig_width = 5))
+  rmarkdown::render(toRender)
+}
