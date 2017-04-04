@@ -39,29 +39,31 @@ Location of program:
 --->
 
 ```{r echo=FALSE, eval=TRUE}
-library(knitr)
-# Set some knitr options
-# This will always generate two figures (pdf and png, which can be handy for presentations)
-opts_chunk$set(tidy = TRUE, cache = FALSE, messages = FALSE, warning = FALSE, echo = FALSE, dev = c("png", "pdf"), dpi = 200)
-```
 
-```{r}
 # Load necessary packages
 # More options could be added later in the template
 suppressPackageStartupMessages({
+  library(knitr)
   library(ggplot2)
   library(grid)
   library(reshape2)
   library(devtools)
   library(xtable)
   library(data.table)
+  library(tidyverse)
 })
+
+# Set some knitr options
+# This will always generate two figures (pdf and png, which can be handy for presentations)
+opts_chunk$set(tidy = TRUE, cache = FALSE, messages = FALSE, warning = FALSE, echo = FALSE, dev = c("png", "pdf"), dpi = 200)
+
 # Create a theme
 # This can be overloaded with other options
-visc_theme <- theme(legend.position = "bottom", legend.margin = unit(0, "cm"))
+visc_theme <- theme(legend.position = "bottom", legend.margin = margin(unit = "cm"))
 #Need to set xtable comment = FALSE for printing
-options(xtable.comment = FALSE)
+options(xtable.comment = FALSE, datatable.verbose = FALSE, scipen = 10)   
 ```
+
 
 ```{r eval=FALSE}
 # This report uses the data compiled in the AUP567 data package
