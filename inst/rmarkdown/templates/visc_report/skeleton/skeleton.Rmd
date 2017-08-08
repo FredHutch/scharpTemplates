@@ -36,6 +36,7 @@ Full name of author:
 Project or Protocol:
 Purpose or description of program:
 Location of program:
+Location of input data:
 --->
 
 ```{r echo=FALSE, eval=TRUE}
