@@ -151,7 +151,32 @@ kable(mtcars, format = "latex", caption = "A simple table")
 
 
 ```{r session_info_table, results = 'asis'}
-#loading in rmarkdown so we can capture verison number
+
+# get username
+getUsername <- function(id=Sys.getenv("USER")){
+  switch(Sys.info()[['sysname']],
+         Windows = {
+           myargs <- paste("user /domain", Sys.getenv("USERNAME"))
+           user <- system2(command="net", args=myargs, stdout=TRUE)
+           user <- gsub("Full Name\ *", "", user[grepl("FULL NAME", toupper(user))])
+           user <- paste(strsplit(gsub(",", "", user), " ")[[1]][c(2, 1)], collapse=" ")
+         },
+         Linux   = {
+           myargs <- paste0("-x -h ldapint.pc.scharp.org -b dc=scharp,dc=org uid=", id)
+           user <- system2("ldapsearch", args = myargs, stdout=TRUE)[11]
+           user <- gsub("[a-z]+: ", "", user)
+         },
+         Darwin  = {
+           myargs <- paste0("-x -h ldapint.pc.scharp.org -b dc=scharp,dc=org uid=", id)
+           user <- system2("ldapsearch", args = myargs, stdout=TRUE)[11]
+           user <- gsub("[a-z]+: ", "", user)
+         })
+
+  return(user)
+}
+username <- ifelse(getUsername()=="0 Success", Sys.getenv("USER"), getUsername())
+
+# loading in rmarkdown so we can capture verison number
 if (any(installed.packages()[,1] == 'rmarkdown')) library(rmarkdown)
 
 my_session_info <- devtools::session_info()
@@ -170,6 +195,11 @@ file_name <-  data.table::data.table(
   name = 'file name',
   value = my_current_input)
 
+# Add user info
+user_info <- data.table::data.table(
+  name = 'user',
+  value = username)
+
 gitremote <-  substr(remote <- system("git remote -v", intern = TRUE)[1],
                      regexpr("\t", remote) + 1,
                      regexpr(" ", remote) - 1)
@@ -179,7 +209,7 @@ if (is.na(gitremote) | gitremote == "") {
   folder_info <- data.table(
     name = 'location',
     value = getwd())
-  my_session_info1 <- data.table::rbindlist(list(my_session_info1, folder_info, file_name))
+  my_session_info1 <- data.table::rbindlist(list(my_session_info1, folder_info, file_name, user_info))
 } else{
   # Git Remote connection, so getting url and path
   all_git_files <- system('git ls-files -co --no-empty-directory --full-name', intern = TRUE)
@@ -200,8 +230,8 @@ if (is.na(gitremote) | gitremote == "") {
   url_info <- data.table::data.table(
     name = 'repo',
     value = gitremote)
-
-  my_session_info1 <- data.table::rbindlist(list(my_session_info1, url_info, folder_info, file_name))
+  
+  my_session_info1 <- data.table::rbindlist(list(my_session_info1, url_info, folder_info, file_name, user_info))
 }
 
 xtab <- xtable(x = my_session_info1,
