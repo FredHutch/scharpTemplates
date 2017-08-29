@@ -158,21 +158,37 @@ getUsername <- function(id=NULL){
     Windows = {
       if(is.null(id)){id <- Sys.getenv("USERNAME")}
       myargs <- paste("user /domain", id)
-      user <- system2(command="net", args=myargs, stdout=TRUE)
+      user <- tryCatch({system2(command="net", args=myargs, stdout=TRUE)},
+                       warning=function(w){NULL},
+                       error=function(e){NULL})
       user <- gsub("Full Name\ *", "", user[grepl("FULL NAME", toupper(user))])
-      user <- paste(strsplit(gsub(",", "", user), " ")[[1]][c(2, 1)], collapse=" ")
+      if(length(user)>0){
+        user <- paste(strsplit(gsub(",", "", user), " ")[[1]][c(2, 1)], collapse=" ")
+      } else {
+        stop("No userid ", id, " was found.")
+      }
     },
     Linux   = {
       if(is.null(id)){id <- Sys.getenv("USER")}
       myargs <- paste0("-x -h ldapint.pc.scharp.org -b dc=scharp,dc=org uid=", id)
-      user <- system2("ldapsearch", args = myargs, stdout=TRUE)[11]
-      user <- gsub("[a-z]+: ", "", user)
+      user <- system2("ldapsearch", args = myargs, stdout=TRUE)
+      user <- user[grep("cn:", user)]
+      if(length(user)>0){
+        user <- gsub("[a-z]+: ", "", user)
+      } else {
+        stop("No userid ", id, " was found.")
+      }
     },
     Darwin  = {
       if(is.null(id)){id <- Sys.getenv("USER")}
       myargs <- paste0("-x -h ldapint.pc.scharp.org -b dc=scharp,dc=org uid=", id)
-      user <- system2("ldapsearch", args = myargs, stdout=TRUE)[11]
-      user <- gsub("[a-z]+: ", "", user)
+      user <- system2("ldapsearch", args = myargs, stdout=TRUE)
+      user <- user[grep("cn:", user)]
+      if(length(user)>0){
+        user <- gsub("[a-z]+: ", "", user)
+      } else {
+        stop("No userid ", id, " was found.")
+      }
     }
   )
 
