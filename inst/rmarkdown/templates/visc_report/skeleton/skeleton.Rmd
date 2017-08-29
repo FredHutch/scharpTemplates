@@ -156,7 +156,7 @@ kable(mtcars, format = "latex", caption = "A simple table")
 getUsername <- function(id=Sys.getenv("USER")){
   switch(Sys.info()[['sysname']],
          Windows = {
-           myargs <- paste("user /domain", Sys.getenv("USERNAME"))
+           myargs <- paste("user /domain", id)
            user <- system2(command="net", args=myargs, stdout=TRUE)
            user <- gsub("Full Name\ *", "", user[grepl("FULL NAME", toupper(user))])
            user <- paste(strsplit(gsub(",", "", user), " ")[[1]][c(2, 1)], collapse=" ")
