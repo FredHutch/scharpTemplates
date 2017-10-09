@@ -197,19 +197,19 @@ $summary$
 \end{abstract}
 $endif$
 
-% \newpage
-\fancyhead[R]{\em $shorttitle$}
-\fancyhead[C]{}
-\fancyhead[L]{\em VISC Report}
 $if(lof)$
 \listoffigures
 \listoftables
 $endif$
+
+\newpage
+\fancyhead[R]{\em $shorttitle$}
+\fancyhead[C]{}
+\fancyhead[L]{\em VISC Report}
 
 \printglossaries
 
 $body$
 \label{LastPageOfBackMatter}~
 \end{document}
-
 
