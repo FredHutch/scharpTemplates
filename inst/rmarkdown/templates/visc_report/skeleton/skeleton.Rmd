@@ -39,7 +39,7 @@ Location of program:
 Location of input data:
 --->
 
-```{r echo=FALSE, eval=TRUE}
+```{r echo=FALSE, eval=TRUE, warning = FALSE}
 
 # Load necessary packages
 # More options could be added later in the template
@@ -69,7 +69,7 @@ options(xtable.comment = FALSE, datatable.verbose = FALSE, scipen = 10)
 ```{r eval=FALSE}
 # This report uses the data compiled in the AUP567 data package
 # You can install it as follows
-install_git("https://github.fhcrc.org/VIDD-VISC/AUP567")
+devtools::install_github("VIDD-VISC/AUP567",host="github.fhcrc.org/api/v3")
 ```
 
 ```{r eval=FALSE}
@@ -83,72 +83,76 @@ data(AUP567)
 
 # Summary of Main Results
 
-Summary Here
+Summarize the findings of the report. Include specific comparisons and references to corresponding figures and tables.
 
 
 # Background
 
-Backgroup Text Here
-
+Outline the study schema/schedule, study groups, time points, etc. Background information can be found in the study protocol, and the background section is also included in the statistical analysis plan (SAP) and QC report.
 
 # Objectives
 
-Objectives Here
+List primary and secondary (if applicable) objectives. Objectives can be found in the study protocol or in the SAP, and should be adjusted if necessary to accomodate available data.
 
 
-# Endpoints
+# Biological Endpoints
 
-Endpoints Here
-
+Describe the measures of interest and the antigens/isolates tested. Information for this section can be found in the SAP, but the tense should be changed from future tense to past tense for PT reports. Most citations used are included in the bibliography.bib file at https://github.fhcrc.org/VIDD-VISC/scharpTemplates/tree/master/inst/rmarkdown/templates/visc_report/skeleton. Testing Reference: @Huang:2013fl. 
 
 # Lab Methods
 
-Lab Methods Here
-
+Describe the lab methods and lab inclusion criteria. Assay-specific information can be found on Github at https://github.fhcrc.org/VIDD-VISC/Assay_Data_Specs/tree/master/Lab_Methods. This section may also be already included in the SAP, but verbs should be changed from future to past tense.
 
 # Statistical Methods
 
-Statistical Methods Here
+## Statistical endpoints
 
+Describe response call criteria and response magnitude measures of interest (including truncation, if applicable). Describe magnitude breadth analysis, if included in the report. This section is often taken from the SAP, but be sure to use past tense.
+
+## Graphical analysis
+
+Describe the plots included in the report (response rate, response magnitude, magnitude breadth, etc.).
+
+## Statistical tests
+
+Describe the tests used for statistical analyses in the report (Fisher's exact, Wilcoxon rank-sum, etc.). Make sure to include testing critera (responders only, at least 3 responders, truncation, etc.). Be sure to describe any p-value adjustment done.
 
 # Participant Cohort
 
-Participant Cohort
-
+Summarize the data by antigen/isolate, time point, and study group. Discuss expected vs. observed sample size. Consider including a summary table.
 
 # Results
 
-Writing up results section
+Summarize the statistical analyses performed.
 
 ## Section 1
 
+Consider breaking up the results section by objective or by statistical endpoint.
+
 ## Section 2
 
-
-
-Testing Reference: @Huang:2013fl.
-
-
+Make sure to include p-values and references to relevant tables and figures. See Figure \ref{fig:example_fig} and Table \ref{tab:example_tab}. 
 
 # Figures and Tables
 
 \clearpage
 
-```{r fig.cap="A simple figure"}
+```{r example_plot,fig.height = 4, fig.cap= "A simple figure with a descriptive caption including information about both axes, groups/time points/antigens included, any legend information, etc. \\label{fig:example_fig}", fig.scap = "Shorter caption for table of contents.", fig.align="center"}
+
 library(ggplot2)
 qplot(1:10,rnorm(10))
 ```
+
 
 
 ```{r results="asis"}
 # Example of a table
 # You can also use xtable for more options
 data(mtcars)
-kable(mtcars, format = "latex", caption = "A simple table")
+kable(mtcars, format = "latex", caption = "A simple table \\label{tab:example_tab}")
 ```
 
 \clearpage 
-
 
 ```{r session_info_table, results = 'asis'}
 
