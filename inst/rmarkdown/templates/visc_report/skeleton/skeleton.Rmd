@@ -95,23 +95,25 @@ Outline the study schema/schedule, study groups, time points, etc. Background in
 List primary and secondary (if applicable) objectives. Objectives can be found in the study protocol or in the SAP, and should be adjusted if necessary to accomodate available data.
 
 
-# Biological Endpoints
+# Endpoints
 
-Describe the measures of interest and the antigens/isolates tested. Information for this section can be found in the SAP, but the tense should be changed from future tense to past tense for PT reports. Most citations used are included in the bibliography.bib file at https://github.fhcrc.org/VIDD-VISC/scharpTemplates/tree/master/inst/rmarkdown/templates/visc_report/skeleton. Testing Reference: @Huang:2013fl. 
+## Biological endpoints
 
-# Lab Methods
-
-Describe the lab methods and lab inclusion criteria. Assay-specific information can be found on Github at https://github.fhcrc.org/VIDD-VISC/Assay_Data_Specs/tree/master/Lab_Methods. This section may also be already included in the SAP, but verbs should be changed from future to past tense.
-
-# Statistical Methods
+Describe the lab measures of interest and the antigens/isolates tested. Information for this section can be found in the SAP, but the tense should be changed from future tense to past tense for PT reports. Most citations used are included in the bibliography.bib file at https://github.fhcrc.org/VIDD-VISC/scharpTemplates/tree/master/inst/rmarkdown/templates/visc_report/skeleton. Testing Reference: @Huang:2013fl.
 
 ## Statistical endpoints
 
-Describe response call criteria and response magnitude measures of interest (including truncation, if applicable). Describe magnitude breadth analysis, if included in the report. Assay specific response call criteria can be found at https://github.fhcrc.org/VIDD-VISC/Assay_Data_Specs. This section is also found in the SAP, but be sure to use past tense for the PT Report.
+Describe the statistical measures of interest (response, response magnitude, etc.) including response call methodology and truncation, if applicable. Assay-specific statistical endpoint information can be found at https://github.fhcrc.org/VIDD-VISC/Assay_Data_Specs.
+
+# Lab Methods
+
+Describe the lab methods and sample inclusion criteria. Assay-specific information can be found on Github at https://github.fhcrc.org/VIDD-VISC/Assay_Data_Specs/tree/master/Lab_Methods. This section may also be already included in the SAP, but verbs should be changed from future to past tense.
+
+# Statistical Methods
 
 ## Graphical analysis
 
-Describe the plots included in the report (response rate, response magnitude, magnitude breadth, etc.).
+Describe in detail the plots included in the report (response rate, response magnitude, magnitude breadth, etc.). Describe the axe as well as any faceting, coloring, and shapes used. Make sure to describe any aspects of plots that apply to a subset of data (significant test p-values, boxplots of responders only, etc.).
 
 ## Statistical tests
 
