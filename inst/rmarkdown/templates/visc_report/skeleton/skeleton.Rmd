@@ -107,7 +107,7 @@ Describe the lab methods and lab inclusion criteria. Assay-specific information 
 
 ## Statistical endpoints
 
-Describe response call criteria and response magnitude measures of interest (including truncation, if applicable). Describe magnitude breadth analysis, if included in the report. This section is often taken from the SAP, but be sure to use past tense.
+Describe response call criteria and response magnitude measures of interest (including truncation, if applicable). Describe magnitude breadth analysis, if included in the report. Assay specific response call criteria can be found at https://github.fhcrc.org/VIDD-VISC/Assay_Data_Specs. This section is also found in the SAP, but be sure to use past tense for the PT Report.
 
 ## Graphical analysis
 
@@ -115,7 +115,7 @@ Describe the plots included in the report (response rate, response magnitude, ma
 
 ## Statistical tests
 
-Describe the tests used for statistical analyses in the report (Fisher's exact, Wilcoxon rank-sum, etc.). Make sure to include testing critera (responders only, at least 3 responders, truncation, etc.). Be sure to describe any p-value adjustment done.
+Describe the tests used for statistical analyses in the report (Fisher's exact, Wilcoxon rank-sum, etc.). Make sure to include testing critera (responders only, at least 3 responders, truncation, etc.). Be sure to describe any p-value adjustment done. Assay-specific testing criteria can be found at https://github.fhcrc.org/VIDD-VISC/Assay_Data_Specs.  
 
 # Participant Cohort
 
