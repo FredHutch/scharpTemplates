@@ -92,8 +92,7 @@ Outline the study schema/schedule, study groups, time points, etc. Background in
 
 # Objectives
 
-List primary and secondary (if applicable) objectives. Objectives can be found on ATLAS, in the study protocol, or in the SAP, and should be adjusted if necessary to accomodate available data.
-
+List primary and secondary (if applicable) objectives. Objectives can be found on ATLAS, in the study protocol, or in the SAP, and should be adjusted if necessary to accommodate available data.
 
 # Endpoints
 
@@ -113,11 +112,17 @@ Describe the lab methods and sample inclusion criteria. Assay-specific informati
 
 ## Graphical analysis
 
-Describe in detail the plots included in the report (response rate, response magnitude, magnitude breadth, etc.). Describe the axe as well as any faceting, coloring, and shapes used. Make sure to describe any aspects of plots that apply to a subset of data (significant test p-values, boxplots of responders only, etc.).
+Update the following section as appropriate for your data.
+
+Response rates were plotted, with accompanying Wilson score confidence intervals, for each group, antigen, and study time point. Distributions of response magnitude were plotted on the log scale for each group, antigen, and study time point with box plots superimposed on the distribution of responders. The mid-line of the box denotes the median and the ends of the box denote the $25^{th}$ and $75^{th}$ percentiles. The whiskers denote the most extreme data points that were no more than 1.5 times the interquartile range (i.e., height of the box). To show response trend over time, line plots of response magnitude were plotted on the log scale by study group and antigen across time points.
 
 ## Statistical tests
 
-Describe the tests used for statistical analyses in the report (Fisher's exact, Wilcoxon rank-sum, etc.). Make sure to include testing critera (responders only, at least 3 responders, truncation, etc.). Be sure to describe any p-value adjustment done. Assay-specific testing criteria can be found at https://github.fhcrc.org/VIDD-VISC/Assay_Data_Specs.  
+Update the following section as appropriate for your data. Assay-specific testing inclusion criteria can be found at https://github.fhcrc.org/VIDD-VISC/Assay_Data_Specs.  
+
+To assess if two groups have different response rates, pairwise group comparisons were conducted using Fisher’s exact test for each time point and antigen. For comparisons across time, McNemar's test were used to account for paired data. Response magnitude comparisons between experimental groups were compared using the Wilcoxon rank-sum test among responders only. Response magnitude comparisons between time points were performed using the Wilcoxon signed-rank test to account for paired data. To be included in the time point comparisons, a participant must be a responder in at least one of the time points. 
+
+The Wilcoxon tests are rank-based tests used to account for non-normality in the magnitude measurements. Because response magnitude comparisons were performed on responders only, each group must have at least 3 responders for the comparison to be conducted. 
 
 # Participant Cohort
 
