@@ -110,15 +110,15 @@
     \setlength{\TPHorizModule}{1cm}
     \setlength{\TPVertModule}{1cm}
     \renewcommand{\headrulewidth}{0.0pt}
-    \renewcommand{\footrulewidth}{0.0pt}}
+    \renewcommand{\footrulewidth}{0.0pt}
+}
 
-%set header and footer for first page
 \renewcommand{\headrulewidth}{0.8pt}
 \renewcommand{\footrulewidth}{0.8pt}
-\fancyhead[L]{\includegraphics[height=0.8cm]{./logos/scharp.png}}
-\fancyhead[C]{\includegraphics[height=0.8cm]{./logos/new_VISC_logo_color.jpg}}
-\fancyhead[R]{\includegraphics[height=0.8cm]{./logos/FredHutch_h_tag_4col_CMYK_tm.png}}
-\fancyfoot[C]{Page \thepage{}~of~\pageref{LastPage}}
+
+% workaround to use landscape environment with pandoc
+\newcommand{\blandscape}{\begin{landscape}}
+\newcommand{\elandscape}{\end{landscape}}
 
 %decrease margins for landscape pages
 \newenvironment{changemargin}[2]{%
@@ -132,6 +132,9 @@
 }%
 \item[]}{\end{list}}
 
+%detect page 1
+\newif\ifpageone
+
 %page settings
 \setlength{\footskip}{56pt}
 \pagestyle{fancy}
@@ -139,15 +142,10 @@
 \makeglossaries
 \begin{document}
 
-
 %get current date into insertdate
 \makeatletter
 \let\insertdate\@date
 \makeatother
-
-% workaround to use landscape environment with pandoc
-\newcommand{\blandscape}{\begin{landscape}}
-\newcommand{\elandscape}{\end{landscape}}
 
 %begin To and From Section
 \makeatletter
@@ -159,6 +157,28 @@
     \leftskip=2em\hspace*{-2em}#1\ifhmode\strut\fi}%
 }
 \makeatother
+
+%set header and footer for first page
+%change color of header and footer text to gray
+\makeatletter
+\patchcmd{\@fancyhead}{\rlap}{\color{gray}\rlap}{}{}
+\patchcmd{\headrule}{\hrule}{\color{gray}\hrule}{}{}
+\patchcmd{\@fancyfoot}{\rlap}{\color{gray}\rlap}{}{}
+\patchcmd{\footrule}{\hrule}{\color{gray}\hrule}{}{}
+\makeatother
+
+\fancyhead[L]{\em VISC Report}  
+\fancyhead[C]{}
+\fancyhead[R]{\em $shorttitle$}
+\fancyfoot[C]{Page \thepage{}~of~\pageref{LastPage}}
+
+\fancypagestyle{firstpage}{%
+  \lhead{\includegraphics[height=0.8cm]{./logos/scharp.png}}
+  \chead{\includegraphics[height=0.8cm]{./logos/new_VISC_logo_color.jpg}}
+  \rhead{\includegraphics[height=0.8cm]{./logos/FredHutch_h_tag_4col_CMYK_tm.png}}
+}
+
+\thispagestyle{firstpage}
 
 \vspace{0.1cm}
 \begin{flushleft}
@@ -182,15 +202,6 @@ $if(toc)$
 \tableofcontents
 $endif$
 
-%change color of header and footer text to gray
-\makeatletter
-\patchcmd{\@fancyhead}{\rlap}{\color{gray}\rlap}{}{}
-\patchcmd{\headrule}{\hrule}{\color{gray}\hrule}{}{}
-\patchcmd{\@fancyfoot}{\rlap}{\color{gray}\rlap}{}{}
-\patchcmd{\footrule}{\hrule}{\color{gray}\hrule}{}{}
-\makeatother
-
-
 $if(includesummary)$
 \begin{abstract}
 $summary$
@@ -203,9 +214,6 @@ $if(lof)$
 $endif$
 
 \newpage
-\fancyhead[R]{\em $shorttitle$}
-\fancyhead[C]{}
-\fancyhead[L]{\em VISC Report}
 
 \printglossaries
 
