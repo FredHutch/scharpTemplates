@@ -90,6 +90,8 @@ Summarize the findings of the report. Include specific comparisons and reference
 
 Outline the study schema/schedule, study groups, time points, etc. Background information can be found on ATLAS or in the study protocol, and the background section is also included in the statistical analysis plan (SAP) and QC report.
 
+Add Study Schedule Table and Speciman Schedule Table in this section
+
 # Objectives
 
 List primary and secondary (if applicable) objectives. Objectives can be found on ATLAS, in the study protocol, or in the SAP, and should be adjusted if necessary to accommodate available data.
