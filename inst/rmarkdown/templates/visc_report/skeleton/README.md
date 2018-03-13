@@ -1,4 +1,4 @@
-Report history
+## Report history
 
 | **Version** | **Date sent to VDC**| **Unblinded** | **Data Spec.**|**Lab Spec.** | **Commit link** |
 |------------------|-----------------|------------------|-----------------|------------------|-----------------|
@@ -17,3 +17,6 @@ USE_AS_EXAMPLE_THEN_DELETE_ME
 | **Version** | **Date sent to VDC**| **Unblinded** | **Data Spec.**|**Lab Spec.** | **Commit link** |
 |------------------|-----------------|------------------|-----------------|------------------|-----------------|
 |1.0 | 2017-10-31 | Yes | [1.0](https://github.fhcrc.org/VIDD-VISC/Assay_Data_Specs/blob/b24a7638bb949ba8264deba02f030fbd6f857b9a/BAMA_Serum.md) | [1.0](https://github.fhcrc.org/VIDD-VISC/Assay_Data_Specs/blob/816ec28142f9c89a3dccb9f17d64476f1056f99f/Lab_Methods/BAMA_Lab_Methods.md)| [69bd4bc35cd24dabef4b3f97d9a96068f600891e](https://github.fhcrc.org/VIDD-VISC/Uberla465Analysis/blob/69bd4bc35cd24dabef4b3f97d9a96068f600891e/BAMA/Uberla465_BAMA_PT/Uberla465_BAMA_PT.pdf) |
+
+
+## Analysis notes
