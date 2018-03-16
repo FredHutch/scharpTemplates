@@ -63,6 +63,17 @@ opts_chunk$set(tidy = TRUE, cache = FALSE, messages = FALSE, warning = FALSE, ec
 visc_theme <- theme(legend.position = "bottom", legend.margin = margin(unit = "cm"))
 #Need to set xtable comment = FALSE for printing
 options(xtable.comment = FALSE, datatable.verbose = FALSE, scipen = 10)   
+
+#Multiple page table code
+addtorow <- list()
+addtorow$pos <- list()
+addtorow$pos[[1]] <- c(0)
+addtorow$command  <- c(paste("\\hline \n",
+                             "\\endhead \n",
+                             "\\hline \n",
+                             
+                             "\\endfoot \n",
+                             "\\endlastfoot \n",sep = "")) 
 ```
 
 
