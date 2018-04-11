@@ -11,5 +11,6 @@ Collate: utils.R
   visc_report.R
   rglab_report.R
   visc_sap_bama.R
+  rglab_sap.R
 Imports:
     rmarkdown

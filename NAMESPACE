@@ -3,3 +3,4 @@
 export(RGLab_report)
 export(visc_report)
 export(visc_sap_bama)
+export(rglab_sap)

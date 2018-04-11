@@ -1,0 +1,108 @@
+---
+title: "Statistical Analysis Plan"
+shorttitle: "Statistical Analysis Plan For Study XXXX"
+from:
+ - name: FirstNameA LastNameA
+   email: foo@bar.com
+   contact: yes
+ - name: FirstNameB LastNameB
+to:
+ - name: FirstnameA LastnameA 
+ - name: FirstnameB LastnameB
+cc:
+ - name: FirstNameA LastNameA
+ - name: FirstNameB LastNameB
+summary: 
+  A short summary about your report. 
+bibliography: bibliography.bib
+lof: no
+toc: no
+output: scharpTemplates::rglab_sap
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile),  paste0('REPORTNAME_SAP-DRAFT_BAMA', format(Sys.Date(), "%d%b%Y"), '.pdf')))})
+---
+
+```{r echo=FALSE, eval=TRUE}
+library(knitr)
+# Set some knitr options
+# This will always generate two figures (pdf and png, which can be handy for presentations)
+opts_chunk$set(tidy = TRUE, cache = FALSE, messages = FALSE, warning = FALSE, echo = FALSE, dev = c("pdf", "png"), dpi = 200)
+```
+
+```{r}
+# Load necessary packages
+# More options could be added later in the template
+   
+suppressPackageStartupMessages({
+  library(knitr)
+  library(Hmisc)
+  library(xtable)
+  library(data.table)
+  library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+  library(reshape2)
+  library(scales)
+  library(devtools)
+  })
+
+opts_chunk$set(tidy = TRUE, cache = FALSE, message = TRUE, warning = TRUE, echo = FALSE, dev = c("pdf", "png"), dpi = 200, fig.pos = 'htbp', fig.height = 5)
+options(xtable.comment = FALSE)
+
+# Create a theme
+# This can be overloaded with other options
+theme <- theme(legend.position = "bottom", legend.margin = unit(0, "cm"))
+```
+
+```{r eval=FALSE}
+# Update for your report
+# Load data package
+# library(datapackagename)
+# Load data
+# data("dataset")
+```
+
+# Background
+
+Describe the trial here
+
+# Objectives
+
+Objectives Here
+
+## Primary objectives
+
+List primary objectives
+1. 
+2.
+
+# Statistical Methods
+
+## Biological data
+
+Describe the assay:
+
+
+## Statistical endpoints
+
+### Definition of a positive response
+
+
+```{r, results = 'asis', eval = F}
+#Update with positivity cutoffs for the relevant study
+```
+
+### Response magnitude
+\label{magnitude}
+
+
+## Graphical analysis
+
+
+## Statistical tests
+
+
+## Statistical comparisons
+\label{comparisons}
+
+
+
