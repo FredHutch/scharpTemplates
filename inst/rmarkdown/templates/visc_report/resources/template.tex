@@ -150,6 +150,11 @@
 \newcommand{\blandscape}{\begin{landscape}}
 \newcommand{\elandscape}{\end{landscape}}
 
+% being able to set emphasis for entire table row
+\newcommand\setrow[1]{\gdef\rowmac{#1}#1\ignorespaces}
+\newcommand\clearrow{\global\let\rowmac\relax}
+\clearrow
+
 %begin To and From Section
 \makeatletter
 \newcommand\tabfill[1]{%
