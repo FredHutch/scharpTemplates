@@ -133,6 +133,11 @@
 }%
 \item[]}{\end{list}}
 
+% being able to set emphasis for entire table row
+\newcommand\setrow[1]{\gdef\rowmac{#1}#1\ignorespaces}
+\newcommand\clearrow{\global\let\rowmac\relax}
+\clearrow
+
 %page settings
 \setlength{\footskip}{56pt}
 \pagestyle{fancy}
@@ -149,11 +154,6 @@
 % workaround to use landscape environment with pandoc
 \newcommand{\blandscape}{\begin{landscape}}
 \newcommand{\elandscape}{\end{landscape}}
-
-% being able to set emphasis for entire table row
-\newcommand\setrow[1]{\gdef\rowmac{#1}#1\ignorespaces}
-\newcommand\clearrow{\global\let\rowmac\relax}
-\clearrow
 
 %begin To and From Section
 \makeatletter
