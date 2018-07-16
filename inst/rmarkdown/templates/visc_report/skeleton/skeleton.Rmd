@@ -74,6 +74,10 @@ addtorow$command  <- c(paste("\\hline \n",
                              
                              "\\endfoot \n",
                              "\\endlastfoot \n",sep = "")) 
+                             
+# VTN Color Palette
+cbPalette <- c("#787873","#1749FF","#D92321","#0AB7C9","#FF6F1B","#810094","#FF5EBF","#8F8F8F")
+
 ```
 
 
