@@ -45,13 +45,10 @@ Location of input data:
 # More options could be added later in the template
 suppressPackageStartupMessages({
   library(knitr)
-  library(ggplot2)
-  library(grid)
-  library(reshape2)
-  library(devtools)
   library(kableExtra)
   library(data.table)
   library(tidyverse)
+  library(VISCfunctions)
 })
 
 # Set some knitr options
@@ -171,7 +168,6 @@ qplot(1:10,rnorm(10))
 
 ```{r results="asis"}
 # Example of a table
-# You can also use xtable for more options
 data(mtcars)
 kable(mtcars, format = "latex", caption = "A simple table \\label{tab:example_tab}")
 ```
