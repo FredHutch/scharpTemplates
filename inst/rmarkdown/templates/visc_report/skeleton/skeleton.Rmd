@@ -45,13 +45,10 @@ Location of input data:
 # More options could be added later in the template
 suppressPackageStartupMessages({
   library(knitr)
-  library(ggplot2)
-  library(grid)
-  library(reshape2)
-  library(devtools)
   library(kableExtra)
   library(data.table)
   library(tidyverse)
+  library(VISCfunctions)
 })
 
 # Set some knitr options
@@ -170,16 +167,10 @@ qplot(1:10,rnorm(10))
 
 
 ```{r results="asis"}
-# Example of a table
-# You can also use xtable for more options
+# Example of a table with some formatting options set
+# Set longtable = T for tables that extend past one page
 data(mtcars)
-kable(mtcars, format = "latex", caption = "A simple table \\label{tab:example_tab}")
-```
-
-\clearpage 
-
-```{r results="asis"}
-kable(mtcars, format = "latex", caption = "A simple table \\label{tab:example_tab}")
+kable(mtcars, format = "latex", longtable = F, booktabs = T, linesep = "", escape = F, caption = "A simple table \\label{tab:example_tab}") %>% kable_styling(font_size = 8, latex_options = c("hold_position", "scale_down", "repeat_header"))
 ```
 
 \clearpage 
