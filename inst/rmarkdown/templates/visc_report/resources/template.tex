@@ -86,6 +86,10 @@
 
 \renewcommand{\abstractname}{Overview}
 
+% Add unicode checkmark for DataPackageR support. The green checkmark
+% that DataPackageR prints to the console during package_build() causes
+% an error with latex. This changes the unicode checkmark to a latex one.
+\DeclareUnicodeCharacter{2714}{\checkmark}
 
 % Configure hyperref formatting bookmarks and references
 \hypersetup{
@@ -145,7 +149,6 @@
 \setlength{\parindent}{0pt}
 \makeglossaries
 \begin{document}
-
 
 %get current date into insertdate
 \makeatletter
