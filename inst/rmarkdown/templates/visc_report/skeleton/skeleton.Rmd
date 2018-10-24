@@ -55,6 +55,9 @@ suppressPackageStartupMessages({
 # This will always generate two figures (pdf and png, which can be handy for presentations)
 opts_chunk$set(tidy = TRUE, cache = FALSE, messages = FALSE, warning = FALSE, echo = FALSE, dev = c("png", "pdf"), dpi = 200)
 
+# NA's to print as blank
+options(knitr.kable.NA = '')
+
 # Create a theme
 # This can be overloaded with other options
 visc_theme <- theme(legend.position = "bottom", legend.margin = margin(unit = "cm"))
@@ -322,7 +325,6 @@ if (nrow(my_session_info2) > 0) {
 if (all(is.na(my_session_info2$data.version))) {
   my_session_info2 <- my_session_info2[, c('package', 'version', 'date', 'source')]
 } else {
-  is.na(my_session_info2$data.version) <- ''
   my_session_info2 <- my_session_info2[, c('package', 'version', 'data.version', 'date', 'source')]
 }
 
