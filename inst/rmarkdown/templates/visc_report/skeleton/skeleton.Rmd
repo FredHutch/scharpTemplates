@@ -294,11 +294,23 @@ kable(my_session_info1, 'latex', row.names = F, booktabs = TRUE, linesep = '', c
 
 
 # TABLE 2
-my_session_info2_pre <- data.frame(
-  matrix(unlist(packages), ncol = length(packages)),
-  stringsAsFactors = FALSE)
-my_session_info2 <- my_session_info2_pre[my_session_info2_pre$X2 == '*',][, -2] # Only want attached packages
-names(my_session_info2) <- names(packages)[-2]
+#my_session_info2_pre <- data.frame(
+#  matrix(unlist(packages), ncol = length(packages)),
+#  stringsAsFactors = FALSE)
+#my_session_info2 <- my_session_info2_pre[my_session_info2_pre$X2 == '*',][, -2] # Only want attached packages
+#names(my_session_info2) <- names(packages)[-2]
+
+devtools_version <-  packageVersion('devtools')
+if (numeric_version(devtools_version) >= '2.0.0') {
+my_session_info2 <- packages[packages$attached,] # Only want attached packages
+my_session_info2 <- data.frame(package = my_session_info2$package, 
+                               version = my_session_info2$loadedversion, 
+                               date = my_session_info2$date, 
+                               source = my_session_info2$source) 
+} else {
+  my_session_info2 <- packages[packages$`*` == '*', -2]
+}
+
 
 # Adding in Data Versions
 if (nrow(my_session_info2) > 0) {
