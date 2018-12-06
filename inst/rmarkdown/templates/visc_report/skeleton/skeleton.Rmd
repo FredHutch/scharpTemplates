@@ -46,7 +46,6 @@ Location of input data:
 suppressPackageStartupMessages({
   library(knitr)
   library(kableExtra)
-  library(data.table)
   library(tidyverse)
   library(VISCfunctions)
 })
@@ -61,10 +60,15 @@ options(knitr.kable.NA = '')
 # Create a theme
 # This can be overloaded with other options
 visc_theme <- theme(legend.position = "bottom", legend.margin = margin(unit = "cm"))
-#Need to set xtable comment = FALSE for printing
+
+# VTN Color Palette
+cbPalette <- c("#787873","#1749FF","#D92321","#0AB7C9","#FF6F1B","#810094","#FF5EBF","#8F8F8F")
+
+# If using xtable:
+# Need to set xtable comment = FALSE for printing
 options(xtable.comment = FALSE, datatable.verbose = FALSE, scipen = 10)   
 
-#Multiple page table code - do not need unless using xtable
+# Multiple page table code - do not need unless using xtable
 # addtorow <- list()
 # addtorow$pos <- list()
 # addtorow$pos[[1]] <- c(0)
@@ -74,10 +78,7 @@ options(xtable.comment = FALSE, datatable.verbose = FALSE, scipen = 10)
 #                              
 #                              "\\endfoot \n",
 #                              "\\endlastfoot \n",sep = "")) 
-                             
-# VTN Color Palette
-cbPalette <- c("#787873","#1749FF","#D92321","#0AB7C9","#FF6F1B","#810094","#FF5EBF","#8F8F8F")
-
+                            
 ```
 
 
@@ -293,15 +294,25 @@ if (is.na(gitremote) | gitremote == "") {
   my_session_info1 <- rbind(my_session_info1, url_info, folder_info, file_name, user_info)
 }
 
-kable(my_session_info1, 'latex', row.names = F, booktabs = TRUE, linesep = '', caption = "Supplemental Table: Reproducibility Software Session Information \\label{tab:session_info}")
+info1_cap <- "Supplemental Table: Reproducibility Software Session Information \\label{tab:session_info}"
+
+my_session_info1 %>%
+  kable(
+    format = "latex",
+    row.names = FALSE,
+    booktabs = TRUE,
+    linesep = "",
+    col.names = NULL,
+    caption = info1_cap
+    ) %>%
+  kable_styling(
+    latex_options = "hold_position"
+  )
+```
 
 
+```{r}
 # TABLE 2
-#my_session_info2_pre <- data.frame(
-#  matrix(unlist(packages), ncol = length(packages)),
-#  stringsAsFactors = FALSE)
-#my_session_info2 <- my_session_info2_pre[my_session_info2_pre$X2 == '*',][, -2] # Only want attached packages
-#names(my_session_info2) <- names(packages)[-2]
 
 devtools_version <-  packageVersion('devtools')
 if (numeric_version(devtools_version) >= '2.0.0') {
@@ -353,7 +364,19 @@ my_session_info2 <- rbind(my_session_info2, thisRow)
 my_session_info2 <- my_session_info2[, c('package', 'version', 'data.version', 'date', 'source')]
 }
 
-kable(my_session_info2, 'latex', row.names = F, booktabs = TRUE, linesep = '', caption = "Supplemental Table: Reproducibility Software Package Version Information \\label{tab:session_info2}")
+info2_cap <- "Supplemental Table: Reproducibility Software Package Version Information \\label{tab:session_info2}"
+
+my_session_info2 %>%
+  kable(
+    format = "latex",
+    row.names = FALSE,
+    booktabs = TRUE,
+    linesep = "",
+    caption = info2_cap
+    ) %>%
+  kable_styling(
+    latex_options = "hold_position"
+  )
 
 ```
 
