@@ -57,8 +57,8 @@ opts_chunk$set(tidy = TRUE, cache = FALSE, messages = FALSE, warning = FALSE, ec
 # NA's to print as blank
 options(knitr.kable.NA = '')
 
-# Numeric, not scientific, format
-options(scipen = 10)
+# Numeric, not scientific, format. Suppress output for data.table if using.
+options(scipen = 10, datatable.verbose = FALSE)
 
 # Create a theme
 # This can be overloaded with other options
@@ -69,7 +69,7 @@ cbPalette <- c("#787873","#1749FF","#D92321","#0AB7C9","#FF6F1B","#810094","#FF5
 
 # If using xtable:
 # Need to set xtable comment = FALSE for printing
-# options(xtable.comment = FALSE, datatable.verbose = FALSE)   
+# options(xtable.comment = FALSE)   
 ```
 
 
