@@ -13,7 +13,7 @@ to:
  - name: FirstNameD LastNameD
  - name: FirstNameE LastNameE
  - name: FirstNameF LastNameF
-includecc: true
+dropcc: false
 cc:
  - name: FirstNameA LastNameA
  - name: FirstNameB LastNameB
