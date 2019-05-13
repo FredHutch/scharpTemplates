@@ -27,7 +27,9 @@ bibliography: bibliography.bib
 lof: true
 lot: true
 toc: true
-output: scharpTemplates::visc_report
+output: 
+  scharpTemplates::visc_report:
+    keep_tex: true
 ---
 
 <!---
