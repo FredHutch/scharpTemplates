@@ -1,7 +1,7 @@
 Package: scharpTemplates
 Type: Package
 Title: A great template for VISC
-Version: 0.2.3.1
+Version: 0.3
 Date: 2019-05-13
 Author: Greg Finak, Jimmy Fulp, Paul Obrecht
 Maintainer: Who to complain to <yourfault@somewhere.net>
