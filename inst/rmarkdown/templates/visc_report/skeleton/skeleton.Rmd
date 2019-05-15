@@ -4,7 +4,7 @@ shorttitle: "Short Title"
 from:
  - name: FirstNameA LastNameA
    email: foo@bar.com
-   contact: yes
+   contact: true
  - name: FirstNameB LastNameB
 to:
  - name: FirstNameA LastNameA
@@ -13,20 +13,23 @@ to:
  - name: FirstNameD LastNameD
  - name: FirstNameE LastNameE
  - name: FirstNameF LastNameF
+dropcc: false
 cc:
  - name: FirstNameA LastNameA
  - name: FirstNameB LastNameB
  - name: FirstNameC LastNameC
  - name: FirstNameD LastNameD
  - name: FirstNameE LastNameE
-includesummary: yes
+includesummary: true
 summary: 
   A short summary about your report. 
 bibliography: bibliography.bib
-lof: yes
-lot: yes
-toc: yes
-output: scharpTemplates::visc_report
+lof: true
+lot: true
+toc: true
+output: 
+  scharpTemplates::visc_report:
+    keep_tex: true
 ---
 
 <!---
