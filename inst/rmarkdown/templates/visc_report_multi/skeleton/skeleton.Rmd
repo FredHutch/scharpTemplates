@@ -178,13 +178,13 @@ Consider breaking up the results section by objective or by statistical endpoint
 
 ## Section 2
 
-Make sure to include p-values and references to relevant tables and figures. See Figure `r visc_ref('fig:example_plot')` and Table `r visc_ref('tab:example_tab')`. 
+Make sure to include p-values and references to relevant tables and figures. See Figure `r visc_ref('fig:example-plot')` and Table `r visc_ref('tab:example-tab')`. 
 
 # Figures and Tables
 
 `r visc_clearpage()` 
 
-```{r example_plot,fig.height = 4, fig.cap= "A simple figure with a descriptive caption including information about both axes, groups/time points/antigens included, any legend information, etc.", fig.scap = "Shorter caption for table of contents.", fig.align="center"}
+```{r example-plot,fig.height = 4, fig.cap= "A simple figure with a descriptive caption including information about both axes, groups/time points/antigens included, any legend information, etc.", fig.scap = "Shorter caption for table of contents.", fig.align="center"}
 
 library(ggplot2)
 qplot(1:10,rnorm(10))
@@ -192,7 +192,7 @@ qplot(1:10,rnorm(10))
 
 
 
-```{r example_tab, results="asis", warning=kable_warnings}
+```{r example-tab, results="asis", warning=kable_warnings}
 # Example of a table with some formatting options set
 # Set longtable = T for tables that extend past one page
 data(mtcars)
@@ -405,13 +405,13 @@ get_session_info <- function(){
 if (any(installed.packages()[,1] == 'rmarkdown')) suppressWarnings(library(rmarkdown))
 if (any(installed.packages()[,1] == 'scharpTemplates')) suppressWarnings(library(scharpTemplates))
 my_session_info <- get_session_info()
-kableExtra::kable(my_session_info$platform_table, booktabs = TRUE, 
+kableExtra::kable(my_session_info$platform_table, format = output_type, booktabs = TRUE, 
       linesep = '', caption = "Reproducibility Software Session Information") %>% 
       kableExtra::kable_styling(font_size = 8)
 ```
 
 ```{r Software-Package-Version-Information, results = 'asis', warning=kable_warnings}
-kableExtra::kable(my_session_info$packages_table, booktabs = TRUE, 
+kableExtra::kable(my_session_info$packages_table, format = output_type, booktabs = TRUE, 
       linesep = '', caption = "Reproducibility Software Package Version Information") %>% 
       kableExtra::kable_styling(font_size = 8)
 ```
