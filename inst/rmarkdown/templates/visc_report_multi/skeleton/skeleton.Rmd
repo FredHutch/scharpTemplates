@@ -28,7 +28,6 @@ lof: true
 lot: true
 toc: true
 output: 
-  scharpTemplates::visc_report: default
   bookdown::word_document2:
     toc: true
     fig_caption: true
@@ -36,6 +35,7 @@ output:
     fig_width: 6
     reference_docx: word-styles-reference.docx
     keep_md: true
+  scharpTemplates::visc_report: default
 ---
 
 <!---
@@ -48,16 +48,11 @@ Location of program:
 Location of input data:
 --->
 
-```{r echo=FALSE, eval=TRUE, warning = FALSE}
-
-# Need to see if PDF or Word Output
-output_type <- ifelse(knitr::opts_knit$get('rmarkdown.pandoc.to') == 'latex', 'latex', 'pandoc')
-kable_warnings <- ifelse(output_type == 'latex', TRUE, FALSE)
-
+```{r package-loading-and-options, echo=FALSE, eval=TRUE, warning = FALSE, include = FALSE}
 
 ### Add additional packages needed here 
 ### Only works for CRAN packages (manually write library statement for Bioconductor or GitHub packages)
-packages = c("tidyverse","knitr","kableExtra", 'DataSpaceR',"VISCfunctions","cowplot")
+packages = c('conflicted',"tidyverse","knitr","kableExtra", 'DataSpaceR',"VISCfunctions","cowplot")
 #if a package is installed, it will be loaded
 #if any are not, the missing package(s) will be installed and loaded
 package.check <- lapply(packages, FUN = function(x) {
@@ -72,14 +67,21 @@ package.check <- lapply(packages, FUN = function(x) {
 })
 
 # Enforcing specific version of VISCfunctions
-if (numeric_version(packageVersion('VISCfunctions')) < numeric_version('1.1'))
-  stop('VISCfunctions must be at least version "1.1"')
+if (numeric_version(packageVersion('VISCfunctions')) < numeric_version('1.1.1.2'))
+  stop('VISCfunctions must be at least version "1.1.1.2')
+
+# Enforcing specific version of pandoc
+if (numeric_version(rmarkdown::pandoc_version()) < numeric_version('2.0'))
+  stop('pandoc must be at least version "2.0')
 
 
 # Set some knitr options
 # This will always generate two figures (pdf and png, which can be handy for presentations)
-opts_chunk$set(tidy = TRUE, cache = FALSE, messages = TRUE, warning = TRUE, echo = FALSE, dev = c("png", "pdf"), dpi = 200, out.width = '100%')
+opts_chunk$set(tidy = TRUE, cache = FALSE, messages = TRUE, warning = TRUE, echo = FALSE, 
+               dev = c("png", "pdf"), dpi = 200, out.width = '100%')
 
+# Setting some options
+options(knitr.kable.NA = '')
 
 # Create a theme
 # This can be overloaded with other options
@@ -87,6 +89,32 @@ visc_theme <- theme(legend.position = "bottom", legend.margin = margin(unit = "c
 
 # VTN Color Palette
 cbPalette <- c("#787873","#D92321","#1749FF","#0AB7C9","#FF6F1B","#810094","#FF5EBF","#8F8F8F")
+
+ 
+```
+
+
+
+```{r setting-conflicted-preferences, message=FALSE}
+
+# Set the conflict preference for any used functions here 
+# filter() is used in both dplyr and stats, so need to set the preference to dplyr
+conflict_prefer("filter", "dplyr")
+# Add any other conflict  preferences here
+
+```
+
+
+
+```{r word-pdf-functions}
+
+# Need to see if PDF or Word Output
+current_output_type <- knitr::opts_knit$get('rmarkdown.pandoc.to')
+# If interactive setting to pandoc for easier visualization
+output_type <- ifelse(!is.null(current_output_type) && current_output_type == 'latex', 'latex', 'pandoc')
+kable_warnings <- ifelse(output_type == 'latex', TRUE, FALSE)
+pandoc_markup <- ifelse(output_type == 'pandoc', TRUE, FALSE)
+
 
 # Setting up references depending on Word or PDf output
 visc_ref <- function(ref_in) {
@@ -100,24 +128,86 @@ visc_clearpage <- function() {
           '\\clearpage', 
          '#####')
 } 
-  
+ 
 ```
 
 
-```{r eval=FALSE}
-# This report uses the data compiled in the AUP567 data package
-# You can install it as follows
-devtools::install_github("VIDD-VISC/AUP567",host="github.fhcrc.org/api/v3")
+
+```{r data-loading, eval=FALSE}
+# Data Need to be loaded
+# Here is of loading data using SSH key from our GitHuB
+my_cred = git2r::cred_ssh_key(publickey = "PATH_TO_SSH_KEY/.ssh/id_rsa.pub", privatekey = "PATH_TO_SSH_KEY/.ssh/id_rsa")
+remotes::install_git("git@github.com:FredHutch/McElrath762.git", credentials = my_cred)
 ```
 
-```{r eval=FALSE}
-# Load data package
-# This will have to be replaced with your own study package
-# Then change to eval=TRUE
-library(AUP567)
-# Load data
-data(AUP567)
+```{r data-processing}
+# For this template use VISCfunction example data
+data(exampleData_BAMA)
 ```
+
+
+```{r group-testing, warning=FALSE}
+
+## Response Results
+response_testing <- 
+  exampleData_BAMA %>% 
+  filter(!is.na(response)) %>% 
+  group_by(antigen, visitno) %>% 
+  summarize(
+    p_value = two_samp_bin_test(response, group, method = 'barnard'),
+    # Dividing p values by 5, so can show off p value highlighting 
+    #######DELETE BEFORE PRODUCTION
+    p_value = p_value/5,
+    #######
+    p_info = VISCfunctions::pretty_pvalues(p_value, background = 'yellow', digits = 4, italic = pandoc_markup , bold = pandoc_markup, output_type = output_type)
+  ) %>% ungroup()
+
+mag_results <- exampleData_BAMA %>% 
+  filter(response == TRUE) %>% 
+  group_by(antigen, visitno) %>% 
+  group_map(~ as.data.frame(VISCfunctions::pairwise_test_cont(.x$magnitude , .x$group))) %>% 
+  ungroup() %>% 
+  rename(Number_Responders = SampleSizes) %>% 
+  # Dividing p values by 5, so can show off p value highlighting 
+  #######DELETE BEFORE PRODUCTION
+  mutate(p_info = VISCfunctions::pretty_pvalues(MagnitudeTest/5, background = 'yellow', digits = 4, italic = pandoc_markup , bold = pandoc_markup, output_type = output_type))
+
+```
+
+
+
+`r visc_clearpage()` 
+
+# Notes on Using PDF and Word Output Template
+
+ - Use the Knit button select either the PDF (visc_report) or Word (word_document2) output.
+   - Note the shortcut Ctrl-Shift-K will run the first output in the YAML, will be the last output run (starts off as PDF first)
+   - If you want to run both report in one command, either use `rmarkdown::render()` with `output_format = 'all'`, or install the loom package and create a RStuido Addin (<https://github.com/thebioengineer/loom>).
+ - For pagebreaks use the `visc_clearpage()` funtion. You can use this as a simple inline code.
+   - `\clearpage` will not work on Word output
+ - For figure and table references use `visc_ref()` function (see examples). 
+   - Make sure chunk names only use dashes or refering will not work (no spaces or underscores)
+   - Do not use figure or table labels in chunk headings or kable code. Rmarkdown will automatically assign the chunk name as the figure/table reference label
+ - For referencing papers, simply use the @ symbol before bib file reference (i.e. `@Huang:2013fl` gives: @Huang:2013fl)
+ - For referencing sections, use `[Section header text]` in the text
+   - `[Background]` gives: [Background]
+   - `[Biological endpoints]` gives: [Biological endpoints]
+ - Tables:
+   - Only output one table per code chunk
+   - Make sure to have `format = output_type` in the `kableExtra::kable()` call 
+     - `output_type` is either "latex" or "pandoc" depending on current report output
+   - Table name will be chunk name plus "tab:" 
+     - i.e. if chunk name is "descriptvie-stats" then the table label will be "tab:descriptvie-stats"
+   - Note Word output cannot support many kableExtra features, such as `kableExtra::kable_styling()`
+     - set `warning=kable_warnings` chunk option, otherwise Word output will have unwanted warnings
+ - Figures:
+   - Only output one figure per code chunk
+   - Figure name will be chunk name plus "fig:" 
+     - i.e. if chunk name is "descriptvie-stats" then the table label will be "fig:descriptvie-stats"
+ - P values:
+   - When using `VISCfunctions::pretty_pvalues()` make sure to use `output_type = output_type`,  `bold  = pandoc_markup`, and ,  `italic = pandoc_markup`
+     - This will give the appropriate markup depending on PDF or Word output
+
 
 # Summary of Main Results
 
@@ -128,7 +218,7 @@ Summarize the findings of the report. Include specific comparisons and reference
 
 Outline the study schema/schedule, study groups, time points, etc. Background information can be found on ATLAS or in the study protocol, and the background section is also included in the statistical analysis plan (SAP) and QC report.
 
-Add Study Schedule Table and Speciman Schedule Table in this section
+Add Study Schedule Table and Specimen Schedule Table in this section
 
 # Objectives
 
@@ -193,10 +283,13 @@ qplot(1:10,rnorm(10))
 
 
 ```{r example-tab, results="asis", warning=kable_warnings}
-# Example of a table with some formatting options set
-# Set longtable = T for tables that extend past one page
-data(mtcars)
-kable(mtcars, format = output_type, longtable = F, booktabs = T, linesep = "", escape = F, caption = "A simple table") %>%
+
+mag_tab <- mag_results %>% 
+  select(Antigen = antigen, Visit = visitno, Comparison, `Median [Range]` = Median_Min_Max, `Wilcoxon p` = p_info) 
+#Need to manually add escape characters for antigens if latex output
+if (output_type == 'latex') mag_tab$Antigen <- stringr::str_replace_all(mag_tab$Antigen, '_','\\\\_' )
+
+kable(mag_tab , format = output_type, longtable = F, booktabs = T, linesep = "", escape = F, caption = "Table Example") %>%
   kable_styling(font_size = 8, latex_options = c("hold_position", "scale_down", "repeat_header"))
 ```
 
@@ -205,206 +298,13 @@ kable(mtcars, format = output_type, longtable = F, booktabs = T, linesep = "", e
 
 
 
-
-```{r session-info-functions}
-
-### To be moved into VISCfunctions soon
-
-#' Get Full Username from ID
-#'
-#' For a given ID looks up user name
-#'
-#' @param id ID to look full name up. If null (default) looks up ID of current user
-#'
-#' @return First and Last name associated with ID
-#'
-#' @details
-#'
-#' If \code{id} null, uses system "USERNAME" variable for Windows and "USER" variable for Linux and MACs. Full Name is found in Windows via the \code{net} command, and via ldap search in Linux and MACs.
-#'
-#'
-#' @examples
-#'
-#' get_full_name()
-#'
-#' @export
-
-get_full_name <- function(id = NULL){
-  switch(Sys.info()[['sysname']],
-         Windows = {
-           if (is.null(id)) {id <- Sys.getenv("USERNAME")}
-           myargs <- paste("user /domain", id)
-           user <- tryCatch({system2(command = "net", args = myargs, stdout = TRUE)},
-                            warning = function(w){NULL},
-                            error = function(e){NULL})
-           user <- gsub("Full Name\ *", "", user[grepl("FULL NAME", toupper(user))])
-           if (length(user) > 0) {
-             user <- paste(strsplit(gsub(",", "", user), " ")[[1]][c(2, 1)], collapse = " ")
-           } else {
-             user <- id
-           }
-         },
-         Linux   = {
-           if (is.null(id)) {id <- Sys.getenv("USER")}
-           myargs <- paste0("-h mcc_ldap.hlm.ad.moffitt.usf.edu -b dc=hlm,dc=ad,dc=moffitt,dc=usf,dc=edu uid=", id)
-           user <- suppressMessages(system2("ldapsearch", args = myargs, stdout = TRUE))
-           user <- user[grep("cn:", user)]
-           if (length(user) > 0) {
-             user <-  paste(strsplit(gsub(",", "", gsub("[a-z]+: ", "", user)), " ")[[1]][c(2, 1)], collapse = " ")
-           } else {
-             user <- id
-           }
-         },
-         Darwin  = {
-           if (is.null(id)) {id <- Sys.getenv("USER")}
-           myargs <- paste0("-h mcc_ldap.hlm.ad.moffitt.usf.edu -b dc=hlm,dc=ad,dc=moffitt,dc=usf,dc=edu uid=", id)
-           user <- suppressMessages(system2("ldapsearch", args = myargs, stdout = TRUE))
-           user <- user[grep("cn:", user)]
-           if (length(user) > 0) {
-             user <-  paste(strsplit(gsub(",", "", gsub("[a-z]+: ", "", user)), " ")[[1]][c(2, 1)], collapse = " ")
-           } else {
-             user <- id
-           }
-         }
-  )
-  return(user)
-}
-
-
-
-#' Get Reproducibility Tables
-#'
-#' Creating tables used at the end of reports, for reproducibility. Most of the information is based off of sessioninfo::session_info()
-#'
-#'
-#' @return list of length two, containing dataframe of Software Session Information and dataframe of Software Package Version Information
-#'
-#' @details
-#'
-#' Both tables usually printing with \code{kable()} at the end of a report
-#'
-#'
-#' @examples
-#'
-#' my_session_info <- get_session_info()
-#'
-#' library(dplyr)
-#'
-#' # Simple HTML Display
-#' kableExtra::kable(my_session_info$platform_table, 'html',
-#'       caption = "Reproducibility Software Session Information") %>%
-#'       kableExtra::kable_styling()
-#'
-#' kableExtra::kable(my_session_info$packages_table, 'html',
-#'       caption = "Reproducibility Software Package Version Information") %>%
-#'       kableExtra::kable_styling()
-#'
-#'
-#' # Latex Display
-#' kableExtra::kable(my_session_info$platform_table, 'latex', booktabs = TRUE,
-#'       linesep = '', caption = "Reproducibility Software Session Information") %>%
-#'       kableExtra::kable_styling(font_size = 7)
-#'
-#' kableExtra::kable(my_session_info$packages_table, 'latex', booktabs = TRUE,
-#'       linesep = '', caption = "Reproducibility Software Package Version Information") %>%
-#'       kableExtra::kable_styling(font_size = 7)
-#'
-#' @export
-
-
-get_session_info <- function(){
-
-  username <- tryCatch(get_full_name(),
-                       error = function(c)
-                         ifelse(Sys.info()[['sysname']] == 'Windows',
-                                Sys.getenv("USERNAME"),
-                                Sys.getenv("USER")))
-
-  my_session_info <- sessioninfo::session_info()
-
-  platform <- my_session_info[[1]]
-  packages <- my_session_info[[2]]
-
-  # TABLE 1
-  my_session_info1 <- data.frame(
-    name = names(platform),
-    value = matrix(unlist(platform), nrow = length(platform)),
-    stringsAsFactors = FALSE)
-
-  my_current_input <- ifelse(is.null(ci <- knitr::current_input()), 'No Input File Detected', ci)
-  my_current_input_w_dir <- ifelse(is.null(ci <- knitr::current_input(dir = TRUE)), 'No Input File Detected', ci)
-
-  file_name <-  data.frame(
-    name = 'file name',
-    value = my_current_input,
-    stringsAsFactors = FALSE)
-
-  # Add user info
-  user_info <- data.frame(
-    name = 'user',
-    value = username,
-    stringsAsFactors = FALSE)
-
-  gitremoteorg <- tryCatch(system("git remote -v", intern = TRUE)[1], error = function(c) '', warning = function(c) '')
-  gitremote <-  substr(gitremoteorg,
-                       regexpr("\t", gitremoteorg) + 1,
-                       regexpr(" ", gitremoteorg) - 1)
-
-  if (is.na(gitremote) || gitremote == "" || grepl('fatal', gitremote)) {
-    # No Remote Connection, so just give absolute path
-    folder_info <- data.frame(
-      name = 'location',
-      value = ifelse(my_current_input_w_dir != 'No Input File Detected', dirname(my_current_input_w_dir), getwd()),
-      stringsAsFactors = FALSE)
-    my_session_info1 <- rbind(my_session_info1, folder_info, file_name, user_info)
-  } else{
-    if (my_current_input_w_dir != 'No Input File Detected') {
-
-      all_git_files <- system('git ls-files -co --no-empty-directory --full-name', intern = TRUE)
-      folder_info_in <- dirname(all_git_files[unlist(lapply(all_git_files, function(xx) grepl(xx, my_current_input_w_dir)))])
-
-    } else {
-      folder_info_in <- 'No Input File Location Detected'
-    }
-
-
-    # Dropping matching file names that do not match folder path
-    folder_info <- data.frame(
-      name = 'location',
-      value = folder_info_in,
-      stringsAsFactors = FALSE)
-
-    url_info <- data.frame(
-      name = 'repo',
-      value = gitremote,
-      stringsAsFactors = FALSE)
-
-    my_session_info1 <- rbind(my_session_info1, url_info, file_name, folder_info, user_info)
-  }
-
-
-  # TABLE 2
-  my_session_info2 <- packages[packages$attached,] # Only want attached packages
-  my_session_info2 <- data.frame(package = my_session_info2$package,
-                                 version = my_session_info2$loadedversion,
-                                 date = my_session_info2$date,
-                                 source = my_session_info2$source)
-
-
-  list(platform_table = my_session_info1, packages_table = my_session_info2)
-}
-
-
-```
-
-
-
 ```{r Software-Session-Information, results = 'asis', message = FALSE, warning=kable_warnings}
 ### Chunk to create reproducibility tables
 # loading in rmarkdown and scharpTemplates so we can capture verison number
 if (any(installed.packages()[,1] == 'rmarkdown')) suppressWarnings(library(rmarkdown))
 if (any(installed.packages()[,1] == 'scharpTemplates')) suppressWarnings(library(scharpTemplates))
-my_session_info <- get_session_info()
+
+my_session_info <- VISCfunctions::get_session_info()
 kableExtra::kable(my_session_info$platform_table, format = output_type, booktabs = TRUE, 
       linesep = '', caption = "Reproducibility Software Session Information") %>% 
       kableExtra::kable_styling(font_size = 8)
