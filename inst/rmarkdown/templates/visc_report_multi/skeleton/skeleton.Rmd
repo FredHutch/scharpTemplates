@@ -131,7 +131,7 @@ visc_clearpage <- function() {
 
 ```{r data-loading, eval=FALSE}
 # Data Need to be loaded
-# Here is of loading data using SSH key from our GitHuB
+# Here is an example of loading data using SSH key from github.com/FredHutch
 my_cred = git2r::cred_ssh_key(publickey = "PATH_TO_SSH_KEY/.ssh/id_rsa.pub", privatekey = "PATH_TO_SSH_KEY/.ssh/id_rsa")
 remotes::install_git("git@github.com:FredHutch/McElrath762.git", credentials = my_cred)
 ```
@@ -274,9 +274,8 @@ Make sure to include p-values and references to relevant tables and figures. See
 
 # Figures and Tables
 
-`r visc_clearpage()` 
 
-```{r example-plot,fig.height = 4, fig.cap= "A simple figure with a descriptive caption including information about both axes, groups/time points/antigens included, any legend information, etc.", fig.scap = "Shorter caption for table of contents.", fig.align="center"}
+```{r example-plot,fig.height = 4, fig.cap= "A simple figure with a descriptive caption including information about both axes, groups/time points/antigens included, any legend information, etc.", fig.scap = "Shorter caption for table of contents.", fig.align="center", fig.pos="H"}
 
 library(ggplot2)
 qplot(1:10,rnorm(10))
