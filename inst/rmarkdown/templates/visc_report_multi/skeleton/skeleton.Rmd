@@ -135,7 +135,7 @@ visc_clearpage <- function() {
 
 ```{r data-loading, eval=FALSE}
 # Data Need to be loaded
-# Here is of loading data using SSH key from our GitHuB
+# Here is an example of loading data using SSH key from github.com/FredHutch
 my_cred = git2r::cred_ssh_key(publickey = "PATH_TO_SSH_KEY/.ssh/id_rsa.pub", privatekey = "PATH_TO_SSH_KEY/.ssh/id_rsa")
 remotes::install_git("git@github.com:FredHutch/McElrath762.git", credentials = my_cred)
 ```
