@@ -52,7 +52,7 @@ Location of input data:
 
 ### Add additional packages needed here 
 ### Only works for CRAN packages (manually write library statement for Bioconductor or GitHub packages)
-packages = c('conflicted',"tidyverse","knitr","kableExtra", 'DataSpaceR',"VISCfunctions","cowplot")
+packages = c('conflicted',"tidyverse","knitr","kableExtra","VISCfunctions")
 #if a package is installed, it will be loaded
 #if any are not, the missing package(s) will be installed and loaded
 package.check <- lapply(packages, FUN = function(x) {
@@ -65,10 +65,6 @@ package.check <- lapply(packages, FUN = function(x) {
   }
   library(x, character.only = TRUE)
 })
-
-# Enforcing specific version of VISCfunctions
-if (numeric_version(packageVersion('VISCfunctions')) < numeric_version('1.1.1.2'))
-  stop('VISCfunctions must be at least version "1.1.1.2')
 
 # Enforcing specific version of pandoc
 if (numeric_version(rmarkdown::pandoc_version()) < numeric_version('2.0'))
@@ -159,18 +155,24 @@ response_testing <-
     #######DELETE BEFORE PRODUCTION
     p_value = p_value/5,
     #######
-    p_info = VISCfunctions::pretty_pvalues(p_value, background = 'yellow', digits = 4, italic = pandoc_markup , bold = pandoc_markup, output_type = output_type)
+    p_info = 
+      VISCfunctions::pretty_pvalues(
+        p_value, background = 'yellow', digits = 4, 
+        italic = pandoc_markup , bold = pandoc_markup, 
+        output_type = output_type)
   ) %>% ungroup()
 
 mag_results <- exampleData_BAMA %>% 
   filter(response == TRUE) %>% 
   group_by(antigen, visitno) %>% 
-  group_map(~ as.data.frame(VISCfunctions::pairwise_test_cont(.x$magnitude , .x$group))) %>% 
+  group_modify(~ as.data.frame(VISCfunctions::pairwise_test_cont(.x$magnitude , .x$group))) %>% 
   ungroup() %>% 
   rename(Number_Responders = SampleSizes) %>% 
   # Dividing p values by 5, so can show off p value highlighting 
   #######DELETE BEFORE PRODUCTION
-  mutate(p_info = VISCfunctions::pretty_pvalues(MagnitudeTest/5, background = 'yellow', digits = 4, italic = pandoc_markup , bold = pandoc_markup, output_type = output_type))
+  mutate(p_info = VISCfunctions::pretty_pvalues(
+    MagnitudeTest/5, background = 'yellow', digits = 4, italic = pandoc_markup , 
+    bold = pandoc_markup, output_type = output_type))
 
 ```
 
@@ -289,8 +291,21 @@ mag_tab <- mag_results %>%
 #Need to manually add escape characters for antigens if latex output
 if (output_type == 'latex') mag_tab$Antigen <- stringr::str_replace_all(mag_tab$Antigen, '_','\\\\_' )
 
-kable(mag_tab , format = output_type, longtable = F, booktabs = T, linesep = "", escape = F, caption = "Table Example") %>%
-  kable_styling(font_size = 8, latex_options = c("hold_position", "scale_down", "repeat_header"))
+
+mag_tab %>%
+  kable(
+    format = output_type,
+    longtable = FALSE,
+    booktabs = TRUE,
+    linesep = "",
+    escape = FALSE,
+    caption = "Table Example"
+  ) %>%
+  kable_styling(
+    font_size = 8,
+    latex_options = c("hold_position", "scale_down", "repeat_header")
+  )
+
 ```
 
 `r visc_clearpage()`  
