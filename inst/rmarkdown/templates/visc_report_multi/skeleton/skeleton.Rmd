@@ -273,7 +273,7 @@ Make sure to include p-values and references to relevant tables and figures. See
 # Figures and Tables
 
 
-```{r example-plot,fig.height = 4, fig.cap= "A simple figure with a descriptive caption including information about both axes, groups/time points/antigens included, any legend information, etc.", fig.scap = "Shorter caption for table of contents.", fig.align="center"}
+```{r example-plot,fig.height = 4, fig.cap= "A simple figure with a descriptive caption including information about both axes, groups/time points/antigens included, any legend information, etc.", fig.scap = "Shorter caption for table of contents.", fig.align="center", fig.pos="H"}
 
 library(ggplot2)
 qplot(1:10,rnorm(10))
