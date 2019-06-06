@@ -48,7 +48,7 @@ Location of program:
 Location of input data:
 --->
 
-```{r package-loading-and-options, echo=FALSE, eval=TRUE, warning = FALSE, include = FALSE}
+```{r package-loading-and-options, warning=FALSE, include=FALSE}
 
 ### Add additional packages needed here 
 ### Only works for CRAN packages (manually write library statement for Bioconductor or GitHub packages)
