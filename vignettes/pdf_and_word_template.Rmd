@@ -1,0 +1,38 @@
+---
+title: "Using the PDF and Word Output Template"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using the PDF and Word Output Template}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+ - Use the Knit button select either the PDF (visc_report) or Word (word_document2) output.
+   - Note the shortcut Ctrl-Shift-K will run the first output in the YAML, will be the last output run (starts off as PDF first)
+   - If you want to run both report in one command, either use `rmarkdown::render()` with `output_format = 'all'`, or install the loom package and create a RStudio Addin (<https://github.com/thebioengineer/loom>).
+ - For pagebreaks use the `visc_clearpage()` funtion. You can use this as a simple inline code.
+   - `\clearpage` will not work on Word output
+ - For figure and table references use `visc_ref()` function (see examples). 
+   - Make sure chunk names only use dashes or refering will not work (no spaces or underscores)
+   - Do not use figure or table labels in chunk headings or kable code. Rmarkdown will automatically assign the chunk name as the figure/table reference label
+ - For referencing papers, simply use the @ symbol before bib file reference (i.e. `@Huang:2013fl`)
+ - For referencing sections, use `[Section header text]` in the text
+   - `[Background]` gives: [Background]
+   - `[Biological endpoints]` gives: [Biological endpoints]
+ - Tables:
+   - Only output one table per code chunk
+   - Make sure to have `format = output_type` in the `kableExtra::kable()` call 
+     - `output_type` is either "latex" or "pandoc" depending on current report output
+   - Table name will be chunk name plus "tab:" 
+     - i.e. if chunk name is "descriptvie-stats" then the table label will be "tab:descriptvie-stats"
+   - Note Word output cannot support many kableExtra features, such as `kableExtra::kable_styling()`
+     - set `warning=kable_warnings` chunk option, otherwise Word output will have unwanted warnings
+ - Figures:
+   - Only output one figure per code chunk
+   - Figure name will be chunk name plus "fig:" 
+     - i.e. if chunk name is "descriptvie-stats" then the table label will be "fig:descriptvie-stats"
+ - P values:
+   - When using `VISCfunctions::pretty_pvalues()` make sure to use `output_type = output_type`,  `bold  = pandoc_markup`, and ,  `italic = pandoc_markup`
+     - This will give the appropriate markup depending on PDF or Word output
