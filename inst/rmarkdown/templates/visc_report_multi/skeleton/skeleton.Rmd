@@ -28,7 +28,7 @@ lof: true
 lot: true
 toc: true
 output: 
-  scharpTemplates::visc_report: default
+  scharpTemplates::visc_report_multi: default
   bookdown::word_document2:
     toc: true
     fig_caption: true
