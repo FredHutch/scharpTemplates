@@ -74,7 +74,7 @@ if (numeric_version(rmarkdown::pandoc_version()) < numeric_version('2.0'))
 # Set some knitr options
 # This will always generate two figures (pdf and png, which can be handy for presentations)
 opts_chunk$set(tidy = TRUE, cache = FALSE, messages = TRUE, warning = TRUE, echo = FALSE, 
-               dev = c("png", "pdf"), dpi = 200, out.width = '100%')
+               dev = c("png", "pdf"), dpi = 200, out.width = '100%', out.extra = '')
 
 # Setting some options
 options(knitr.kable.NA = '')
@@ -273,7 +273,8 @@ mag_tab %>%
   kable_styling(
     font_size = 8,
     latex_options = c("hold_position", "scale_down", "repeat_header")
-  )
+  ) %>% 
+  footnote("BAMA Magnitude with testing", threeparttable = TRUE)
 
 ```
 
