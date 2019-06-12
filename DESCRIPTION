@@ -1,16 +1,28 @@
 Package: scharpTemplates
 Type: Package
 Title: A great template for VISC
-Version: 0.3
-Date: 2019-05-13
-Author: Greg Finak, Jimmy Fulp, Paul Obrecht
-Maintainer: Who to complain to <yourfault@somewhere.net>
+Version: 0.3.0.1
+Date: 2019-06-05
+Authors@R: c(person("Greg", "Finak", ,"bmayer@fredhutch.org", "aut"),
+             person("Monica", "Gerber", ,"mgerber@fredhutch.org", "aut"),
+             person("Celia", "Mahoney", ,"cmahoney@fredhutch.org", "aut"),
+             person("Jimmy", "Fulp", ,"wfulp@fredhutch.org", c("aut", "cre"))
+             )
 Description: scharpTemplates -- sharp templates for SCHARP
-License: What license is it under?
+License: GPL-3
 Collate: utils.R
   visc_report.R
   rglab_report.R
   visc_sap_bama.R
   rglab_sap.R
+Depends: R (>= 2.10)
 Imports:
-    rmarkdown
+    dplyr (>= 0.8.1),
+    rmarkdown,
+    VISCfunctions (>= 1.1.2)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Suggests: 
+    knitr
+VignetteBuilder: knitr
