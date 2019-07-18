@@ -2,7 +2,7 @@ Package: scharpTemplates
 Type: Package
 Title: A great template for VISC
 Version: 1.0.0
-Date: 2019-06-05
+Date: 2019-07-18
 Authors@R: c(person("Greg", "Finak", ,"bmayer@fredhutch.org", "aut"),
              person("Monica", "Gerber", ,"mgerber@fredhutch.org", "aut"),
              person("Celia", "Mahoney", ,"cmahoney@fredhutch.org", "aut"),
